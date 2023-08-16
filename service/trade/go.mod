@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/google/uuid v1.3.0
 	github.com/zeromicro/go-zero v1.5.2
 	google.golang.org/grpc v1.55.0
 	google.golang.org/protobuf v1.30.0
