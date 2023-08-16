@@ -6,8 +6,8 @@ services:
     container_name: carbon_redis
     privileged: true
     volumes:
-      - ./docker_env/redis/data:/data
-      - ./docker_env/redis/conf:/etc/redis
+      - ./redis/data:/data
+      - ./redis/conf:/etc/redis
     ports:
       - "6369:6379"
     environment:
@@ -16,7 +16,7 @@ services:
 
 
   mysql:
-    image: mysql:5.7
+    image: mysql:8
     restart: always
     container_name: carbon_mysql
     environment:
@@ -25,8 +25,8 @@ services:
     ports:
       - 3326:3306
     volumes:
-      - ./mysql8/data:/var/lib/mysql
-      - ./mysql8/config/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/conf/my.cnf:/etc/mysql/my.cnf
     command:
       --max_connections=1000
       --character-set-server=utf8mb4

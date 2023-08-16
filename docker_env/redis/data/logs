@@ -1,0 +1,30 @@
+1:C 16 Aug 2023 17:01:58.572 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 16 Aug 2023 17:01:58.572 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=1, just started
+1:C 16 Aug 2023 17:01:58.572 # Configuration loaded
+1:M 16 Aug 2023 17:01:58.573 * monotonic clock: POSIX clock_gettime
+1:M 16 Aug 2023 17:01:58.573 # Warning: Could not create server TCP listening socket ::1:6379: bind: Cannot assign requested address
+1:M 16 Aug 2023 17:01:58.574 * Running mode=standalone, port=6379.
+1:M 16 Aug 2023 17:01:58.574 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+1:M 16 Aug 2023 17:01:58.574 # Server initialized
+1:M 16 Aug 2023 17:01:58.574 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:M 16 Aug 2023 17:01:58.574 * Ready to accept connections
+1:signal-handler (1692176548) Received SIGTERM scheduling shutdown...
+1:M 16 Aug 2023 17:02:28.656 # User requested shutdown...
+1:M 16 Aug 2023 17:02:28.656 * Saving the final RDB snapshot before exiting.
+1:M 16 Aug 2023 17:02:28.658 * DB saved on disk
+1:M 16 Aug 2023 17:02:28.658 # Redis is now ready to exit, bye bye...
+1:C 16 Aug 2023 17:02:35.723 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 16 Aug 2023 17:02:35.723 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=1, just started
+1:C 16 Aug 2023 17:02:35.723 # Configuration loaded
+1:M 16 Aug 2023 17:02:35.723 * monotonic clock: POSIX clock_gettime
+1:M 16 Aug 2023 17:02:35.724 # Warning: Could not create server TCP listening socket ::1:6379: bind: Cannot assign requested address
+1:M 16 Aug 2023 17:02:35.724 * Running mode=standalone, port=6379.
+1:M 16 Aug 2023 17:02:35.724 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+1:M 16 Aug 2023 17:02:35.724 # Server initialized
+1:M 16 Aug 2023 17:02:35.724 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:M 16 Aug 2023 17:02:35.725 * Loading RDB produced by version 7.0.11
+1:M 16 Aug 2023 17:02:35.725 * RDB age 7 seconds
+1:M 16 Aug 2023 17:02:35.725 * RDB memory usage when created 0.82 Mb
+1:M 16 Aug 2023 17:02:35.725 * Done loading RDB, keys loaded: 0, keys expired: 0.
+1:M 16 Aug 2023 17:02:35.725 * DB loaded from disk: 0.000 seconds
+1:M 16 Aug 2023 17:02:35.725 * Ready to accept connections
