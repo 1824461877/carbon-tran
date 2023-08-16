@@ -1,0 +1,34 @@
+version: "3"
+services:
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: carbon_redis
+    privileged: true
+    volumes:
+      - ./docker_env/redis/data:/data
+      - ./docker_env/redis/conf:/etc/redis
+    ports:
+      - "6369:6379"
+    environment:
+      TZ: Asia/Shanghai
+    command: "redis-server /etc/redis/redis.conf"
+
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    container_name: carbon_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    ports:
+      - 3326:3306
+    volumes:
+      - ./mysql8/data:/var/lib/mysql
+      - ./mysql8/config/my.cnf:/etc/mysql/my.cnf
+    command:
+      --max_connections=1000
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password

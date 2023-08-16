@@ -1,0 +1,20 @@
+Name: gsfback-api
+Host: 0.0.0.0
+Port: 8871
+
+#web请求到此api服务的超时时间
+Timeout: 10000
+# 将请求体最大允许字节数从1MB改为1000MB
+MaxBytes: 1048576000
+
+UploadFile:
+  MaxFileNum: 1000
+  MaxFileSize: 1048576000  # 1000MB
+  SavePath: upload_files/img
+
+Log:
+  Mode: file
+  Path: log/go-zero-api
+  Level: error
+  Compress: true
+  KeepDays: 180

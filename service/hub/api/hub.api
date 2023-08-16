@@ -1,0 +1,26 @@
+syntax = "v2"
+
+import (
+	"./exchange.api"
+	"./personal.api"
+	"./wallet.api"
+)
+
+info(
+	titile: "hub info"
+	author: "hniee"
+	date: "2023-5-28"
+	desc: "hub api server"
+	version : "1.1"
+)
+
+type (
+	Ping {
+		Message string `json:"message"`
+	}
+)
+
+service hub-api {
+	@handler ping
+	get /ping returns (Ping)
+}

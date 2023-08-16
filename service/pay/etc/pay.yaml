@@ -1,0 +1,23 @@
+Name: pay.rpc
+ListenOn: 0.0.0.0:8086
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: pays.rpc
+
+CacheRedis:
+  - Host: "172.25.41.40:6369"
+    Pass: "1234567"
+    Type: node
+
+PayServiceAuth:
+  UserJwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
+  UserJwtSignExpire: 1000
+  JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
+  JwtSignExpire: 1000
+
+MysqlService:
+  WalletMysql:
+    DataSourceName: root:123456@(172.25.41.40:3326)/carbon?charset=utf8&parseTime=true&loc=Asia%2FChongqing
+  PayMysql:
+    DataSourceName: root:123456@(172.25.41.40:3326)/pay?charset=utf8&parseTime=true&loc=Asia%2FChongqing

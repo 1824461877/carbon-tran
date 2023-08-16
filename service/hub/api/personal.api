@@ -1,0 +1,78 @@
+type (
+    PersonalAssetToken {
+        Token string `json:"token"`
+    }
+
+    PersonalAssetRetireReq {
+        Token PersonalAssetToken `json:"token"`
+        AssId string `json:"ass_id"`
+        Number int `json:"number"`
+        CurrentTime string `json:"-"`
+    }
+
+    PersonalAssetOnceResp {
+        Code string `json:"code"`
+        AssId string `json:"ass_id"`
+        Source string `json:"source"`
+        Affiliation int `json:"affiliation"`
+        Number int `json:"number"`
+        Day int `json:"day"`
+    }
+
+    PersonalAssetListResp {
+        PersonalAssetList []PersonalAssetOnceResp `json:"personal_asset_list"`
+    }
+
+    PersonalAssetRetireResp {
+        Code int `json:"code"`
+        AssId string `json:"ass_id"`
+        Message string `json:"message"`
+        CurrentTime string `json:"current_time"`
+    }
+
+    PersonalAssetSellReq {
+        Token PersonalAssetToken `json:"token"`
+        AssId string `json:"ass_id"`
+        Number int `json:"number"`
+    }
+
+    PersonalAssetSellResp {
+        Code int `json:"code"`
+        Assid string `json:"ass_id"`
+        Message string `json:"message"`
+        CurrentTime string `json:"current_time"`
+    }
+)
+
+@server(
+    middleware: AuthJwt
+)
+
+service hub-api {
+    @doc(
+        summary: "User get personal asset list"
+    )
+    @server(
+        handler: GetPersonalAssetList
+        group: personal
+    )
+    get /personal/asset_list (PersonalAssetToken) returns (PersonalAssetListResp)
+
+    @doc(
+        summary: "User get personal asset retire"
+    )
+    @server(
+        handler: GetPersonalAssetRetire
+        group: personal
+    )
+    post /personal/retire (PersonalAssetRetireReq) returns (PersonalAssetRetireResp)
+
+    @doc(
+        summary: "User get personal asset retire"
+    )
+    @server(
+        handler: GetPersonalAssetSell
+        group: personal
+    )
+    post /personal/sell (PersonalAssetSellReq) returns (PersonalAssetSellResp)
+}

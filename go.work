@@ -1,0 +1,8 @@
+go 1.18
+
+use (
+	./service/hub
+	./service/trade
+	./service/pay
+	./service/gsf
+)

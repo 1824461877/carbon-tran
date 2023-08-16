@@ -1,0 +1,76 @@
+type (
+    ExchangeAssetToken {
+        Token string `json:"token"`
+    }
+
+    ExchangeAssetTransactionReq {
+        Token ExchangeAssetToken `json:"token"`
+        AssId string `json:"ass_id"`
+        Number string `json:"number"`
+    }
+
+    ExchangeAssetTransactionResp {
+	    Code int `json:"code"`
+        Messing string `json:"messing"`
+    }
+
+    ExchangeAssetDetailsReq {
+        Token ExchangeAssetToken `json:"token"`
+        AssId string `json:"assId"`
+    }
+
+    ExchangeAssetDetailsResp {
+
+    }
+
+    ExchangeAssetOnceResp {
+        AssId string `json:"ass_id"`
+        UserId string `json:"user_id"`
+        Source string `json:"source"`
+        Affiliation string `json:"affiliation"`
+        Number string `json:"number"`
+        LatestTransactionTime string `json:"latest_transaction_time"`
+    }
+
+
+    ExchangeAssetListReq {
+        Token ExchangeAssetToken `json:"token"`
+    }
+
+    ExchangeAssetListResp {
+        ExchangeAssetList []ExchangeAssetOnceResp `json:"exchange_asset_list"`
+    }
+)
+
+@server(
+    middleware: AuthJwt
+)
+
+service hub-api {
+    @doc(
+        summary: "Asset transactions initiated by users"
+    )
+    @server(
+        handler: AssetExchangeTransaction
+        group: exchange
+    )
+    post /exchange/asset_transaction (ExchangeAssetTransactionReq) returns (ExchangeAssetTransactionResp)
+
+    @doc(
+        summary: "User get exchange asset list"
+    )
+    @server(
+        handler: GetExchangeAssetList
+        group: exchange
+    )
+    get /exchange/asset_list (ExchangeAssetListReq) returns (ExchangeAssetListResp)
+
+    @doc(
+        summary: "User get exchange asset details"
+    )
+    @server(
+        handler: GetExchangeAssetDetails
+        group: exchange
+    )
+    get /exchange/asset_details/:ass_id (ExchangeAssetDetailsReq) returns (ExchangeAssetDetailsResp)
+}

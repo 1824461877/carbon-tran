@@ -1,0 +1,39 @@
+syntax = "proto3";
+option go_package = "./pb";
+package pb;
+
+
+message TradeReq {
+  string TaskToken = 1;
+  string ReqTime = 2;
+}
+
+message TradeOrderIdReq {
+  string TradeOrderId = 2;
+}
+
+message TradeOnceResp {
+  string TradeOrderId = 1;
+  string PayOrderId = 2;
+  string CarbonAssetId = 3;
+  string Initiator = 4;
+  string Recipient = 5;
+  int64  TadeStatus = 6;
+  string InitiatorTime = 8;
+  string FinishTime = 9;
+}
+
+message TradeListResp {
+    repeated TradeOnceResp TradeOnceResp = 1;
+}
+
+message TradeExecutionResp {
+  string TradeOrderId = 1;
+  int32 Status = 2;
+  string CreateTime = 3;
+}
+
+service TradeServer {
+  rpc GetTradeList(TradeOrderIdReq) returns (TradeListResp);
+  rpc TradeExecution(TradeReq) returns (TradeExecutionResp);
+}

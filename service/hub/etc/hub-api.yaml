@@ -1,0 +1,45 @@
+Name: hub-api
+Host: 0.0.0.0
+Port: 7779
+
+ServiceJwtSign:
+  UserServiceAuth:
+    JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
+    JwtSignExpire: 10000
+  HubServiceAuth:
+    JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
+    JwtSignExpire: 10000
+  PayServiceAuth:
+    JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
+    JwtSignExpire: 10000
+  TradeServiceAuth:
+    JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
+    JwtSignExpire: 10000
+
+CacheRedis:
+  - Host: "172.25.41.40:6369"
+    Pass: "1234567"
+    Type: node
+
+ServiceRpc:
+  GsfRpc:
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: gsf.rpc
+  PayRpc:
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: pays.rpc
+  TradeRpc:
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: trade.rpc
+    
+MysqlService:
+  UserService:
+    DataSourceName: root:123456@(172.25.41.40:3316)/rwen?charset=utf8&parseTime=true&loc=Asia%2FChongqing
+  HubService:
+    DataSourceName: root:123456@(172.25.41.40:3326)/carbon?charset=utf8&parseTime=true&loc=Asia%2FChongqing

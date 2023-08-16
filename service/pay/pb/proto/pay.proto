@@ -1,0 +1,37 @@
+syntax = "proto3";
+option go_package = "./pb";
+package pb;
+
+message PayReq {
+  string TaskToken = 1;
+  string ReqTime = 2;
+}
+
+message PayOnceReq {
+  string PayOrderId = 1;
+}
+
+message PayOnceResp {
+  string PayOrderId = 1;
+  string Initiator = 2;
+  string Recipient = 3;
+  int32 PayStatus = 4;
+  int64 PayAmount = 5;
+  string InitiatorTime = 6;
+  string FinishTime = 7;
+}
+
+message PayListResp {
+  repeated PayOnceResp PayListResp = 1;
+}
+
+message PayExecutionResp {
+  string PayOrderId = 1;
+  int32 PayStatus = 2;
+  string CreateTime = 3;
+}
+
+service PayServer {
+  rpc GetPayList(PayOnceReq) returns(PayListResp);
+  rpc PayExecution(PayReq) returns(PayExecutionResp);
+}
