@@ -2,6 +2,11 @@ Name: hub-api
 Host: 0.0.0.0
 Port: 7779
 
+RetireCert:
+  UploadPath: "../../upload_file"
+  ImageBackground: "../../retire_background.png"
+  FontTTF: "../../AlimamaShuHeiTi-Bold.ttf"
+
 ServiceJwtSign:
   UserServiceAuth:
     JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"

@@ -15,11 +15,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+USE carbon;
+
 --
 -- Table structure for table `assets`
 --
-CREATE DATABASE carbon;
-USE carbon;
+
 DROP TABLE IF EXISTS `assets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -53,7 +54,7 @@ CREATE TABLE `assets` (
 
 LOCK TABLES `assets` WRITE;
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
-INSERT INTO `assets` VALUES (1,'ab082c70-644a-3711-ac28-d4755b79d26a','H102771824-85975-85975','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','gsf',3,2,'Houji太阳\n能炊具项目','GS7604','issued','中国','太阳热能','VER',85975,85979,'GS1-1-CN-GS7604-3-2020-21289',2020,0,'2023-06-10 15:53:13');
+INSERT INTO `assets` VALUES (1,'ab082c70-644a-3711-ac28-d4755b79d26a','H102771824-85975-85975','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','gsf',5,0,'Houji太阳能炊具项目','GS7604','issued','中国','太阳热能','VER',85975,85979,'GS1-1-CN-GS7604-3-2020-21289',2020,0,'2023-06-10 15:53:13');
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,7 +77,7 @@ CREATE TABLE `assets_sell` (
                                `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '交易创建时间',
                                `end_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '交易结束时间',
                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +106,7 @@ CREATE TABLE `retire` (
                           `certificate_link` varchar(255) NOT NULL COMMENT '证书访问link',
                           `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注销时间',
                           PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +115,6 @@ CREATE TABLE `retire` (
 
 LOCK TABLES `retire` WRITE;
 /*!40000 ALTER TABLE `retire` DISABLE KEYS */;
-INSERT INTO `retire` VALUES (1,'f3af4ed4-69d5-3cef-bea2-f19c9d8c4300','ab082c70-644a-3711-ac28-d4755b79d26a','6bad7442-b629-380d-a6ea-ffa16e3b1aa8',2,1001,'xxx','2023-08-15 10:15:20');
 /*!40000 ALTER TABLE `retire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,4 +159,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-15 20:22:52
+-- Dump completed on 2023-08-21  1:23:15

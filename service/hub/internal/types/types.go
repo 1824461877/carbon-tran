@@ -24,6 +24,10 @@ type ExchangeAssetDetailsReq struct {
 	AssId string             `json:"assId"`
 }
 
+type RetireFile struct {
+	RID   string `path:"rid"`
+}
+
 type ExchangeAssetDetailsResp struct {
 }
 

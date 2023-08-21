@@ -32,5 +32,6 @@ func UserWalletCreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
+
 	}
 }

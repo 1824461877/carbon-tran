@@ -7,6 +7,7 @@ import (
 	exchange "hub/internal/handler/exchange"
 	personal "hub/internal/handler/personal"
 	user "hub/internal/handler/wallet"
+	retirefile "hub/internal/handler/retirefile"
 	"hub/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -51,6 +52,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/exchange/asset_list",
 				Handler: exchange.GetExchangeAssetListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/retire/:rid",
+				Handler: retirefile.GetRetireCertHandler(serverCtx),
+			},
 		},
 	)
 
@@ -86,7 +92,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 	)
-
 
 	// wallet wallet
 	server.AddRoutes(

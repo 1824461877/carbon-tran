@@ -7,6 +7,7 @@ import (
 	"hub/internal/types"
 	"hub/model"
 	public "hub/utils"
+	"retire_cert"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -41,14 +42,30 @@ func (l *PersonalAssetRetireLogic) PersonalAssetRetire(uid string, req *types.Pe
 		return nil, err
 	}
 
+	var (
+		filename string
+		onTime   = time.Now()
+	)
+
+	if filename, _, err = l.svcCtx.RetireCert.RetireCertInter.Create(&retire_cert.RetireCertificate{
+		ByFrom:         "hniee 碳资产中心",
+		ByTo:           one.UserId,
+		OnTime:         onTime.Format("2006-01-02"),
+		VerifiedNumber: req.Number,
+		ProjectName:    one.Project,
+		RetiredBy:      one.UserId,
+	}); err != nil {
+		return nil, err
+	}
+
 	if _, err = l.svcCtx.MysqlServiceContext.Retire.Insert(l.ctx, &model.Retire{
 		Number:          req.Number,
 		UserId:          uid,
 		AssId:           req.AssId,
 		RId:             public.RID(),
 		Status:          1001,
-		CertificateLink: "",
-		CreateTime:      time.Now(),
+		CertificateLink: filename,
+		CreateTime:      onTime,
 	}); err != nil {
 		return nil, err
 	}

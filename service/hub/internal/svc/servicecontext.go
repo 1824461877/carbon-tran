@@ -10,6 +10,7 @@ import (
 	"hub/model"
 	"log"
 	"pay/payserver"
+	"retire_cert"
 	"trade/tradeserver"
 )
 
@@ -18,7 +19,12 @@ type ServiceContext struct {
 	Redis               *redis.Redis
 	ServiceRpc          ServiceRpc
 	Middleware          Middleware
+	RetireCert          RetireCert
 	MysqlServiceContext *MysqlServiceContext
+}
+
+type RetireCert struct {
+	RetireCertInter retire_cert.RetireConfigInter
 }
 
 type ServiceRpc struct {
@@ -49,6 +55,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 	return &ServiceContext{
 		Config: c,
+		RetireCert: RetireCert{
+			RetireCertInter: retire_cert.NewRetireC(c.RetireCert.UploadPath, c.RetireCert.ImageBackground, c.RetireCert.FontTTF),
+		},
 		ServiceRpc: ServiceRpc{
 			//GsfRpc:   gsfserver.NewGsfServer(zrpc.MustNewClient(c.ServiceRpc.GsfRpc)),
 			PayRpc:   payserver.NewPayServer(zrpc.MustNewClient(c.ServiceRpc.PayRpc)),

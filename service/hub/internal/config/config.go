@@ -11,7 +11,14 @@ type Config struct {
 	CacheRedis     cache.CacheConf
 	ServiceJwtSign ServiceJwtSign
 	MysqlService   MysqlService
+	RetireCert     RetireCert
 	ServiceRpc     ServiceRpc
+}
+
+type RetireCert struct {
+	UploadPath      string
+	ImageBackground string
+	FontTTF         string
 }
 
 type ServiceRpc struct {

@@ -29,7 +29,6 @@ func (m *AuthJwtMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			err   error
 			aj    *AuthJwt
 		)
-
 		token = r.Header.Get("Authorization")
 		if token == "" && len(token) <= 0 {
 			httpx.OkJsonCtx(r.Context(), w, types.Err{
@@ -39,7 +38,6 @@ func (m *AuthJwtMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			})
 			return
 		}
-
 		j := NewJwt(m.UserService.JwtSignKey)
 		if aj, err = j.ParseToken(token); err != nil {
 			if err == TokenExpired {
@@ -53,11 +51,9 @@ func (m *AuthJwtMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, TokenInvalid)
 			return
 		}
-
 		var out = struct {
 			Password string `db:"password"`
 		}{}
-
 		query := fmt.Sprintf("select * from %s where `uid` = ?", "rwen_admin")
 		if err = m.DB.QueryRowCtx(context.Background(), &out, query, aj.Id); err != nil {
 			httpx.OkJsonCtx(r.Context(), w, types.Err{
@@ -76,7 +72,6 @@ func (m *AuthJwtMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 				return
 			}
 		}
-
 		r.Header.Set("uid", aj.Id)
 		next(w, r)
 	}
