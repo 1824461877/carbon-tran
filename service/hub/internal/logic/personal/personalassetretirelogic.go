@@ -28,8 +28,6 @@ func NewPersonalAssetRetireLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *PersonalAssetRetireLogic) PersonalAssetRetire(uid string, req *types.PersonalAssetRetireReq) (resp *types.PersonalAssetRetireResp, err error) {
-	// todo: add your logic here and delete this line
-
 	var one *model.Assets
 	if one, err = l.svcCtx.MysqlServiceContext.Assets.FindAssIdOne(l.ctx, req.AssId); err == nil {
 		if one.Number < req.Number {

@@ -1,6 +1,7 @@
 Name: hub-api
 Host: 0.0.0.0
 Port: 7779
+Timeout: 5000000
 
 RetireCert:
   UploadPath: "../../upload_file"
@@ -37,12 +38,14 @@ ServiceRpc:
       Hosts:
         - 127.0.0.1:2379
       Key: pays.rpc
+    Timeout: 0
   TradeRpc:
     Etcd:
       Hosts:
         - 127.0.0.1:2379
       Key: trade.rpc
-    
+    Timeout: 0
+
 MysqlService:
   UserService:
     DataSourceName: root:123456@(172.25.41.40:3316)/rwen?charset=utf8&parseTime=true&loc=Asia%2FChongqing

@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"hub/internal/config"
 	"hub/internal/types"
@@ -55,15 +56,16 @@ func (m *WalletJwtMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			})
 			return
 		} else {
-			if uw.Password != aj.Password {
-				httpx.OkJsonCtx(r.Context(), w, types.Err{
-					Code:    types.ValidErrorCode,
-					Err:     TokenInvalid.Error(),
-					Message: "",
-				})
-				return
-			}
+			//if uw.Password != aj.Password {
+			//	httpx.OkJsonCtx(r.Context(), w, types.Err{
+			//		Code:    types.ValidErrorCode,
+			//		Err:     TokenInvalid.Error(),
+			//		Message: "",
+			//	})
+			//	return
+			//}
 		}
+		fmt.Println(uw)
 
 		r.Header.Set("wid", aj.Id)
 		next(w, r)

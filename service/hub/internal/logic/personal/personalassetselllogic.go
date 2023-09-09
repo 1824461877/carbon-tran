@@ -28,7 +28,6 @@ func NewPersonalAssetSellLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *PersonalAssetSellLogic) PersonalAssetSell(req *types.PersonalAssetSellReq) (resp *types.PersonalAssetSellResp, err error) {
-	// todo: add your logic here and delete this line
 	asset, err := l.svcCtx.MysqlServiceContext.Assets.FindAssIdOne(l.ctx, req.AssId)
 	if err != nil {
 		return nil, err
@@ -41,10 +40,19 @@ func (l *PersonalAssetSellLogic) PersonalAssetSell(req *types.PersonalAssetSellR
 
 	switch req.Status {
 	case types.Sell:
+		_, err = l.svcCtx.MysqlServiceContext.UserWallet.FindOneByWalletId(l.ctx, req.CollectionWalletId)
+		if err != nil {
+			return nil, err
+		}
+
 		if req.Number <= asset.Number {
 			if req.Number > asset.Number {
 				return nil, errors.New("incorrect quantity")
 			}
+		}
+		
+		if req.Amount <= 0 {
+			return nil, errors.New("incorrect amount value")
 		}
 
 		var (

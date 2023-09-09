@@ -19,16 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	TradeServer_GetTradeList_FullMethodName   = "/pb.TradeServer/GetTradeList"
-	TradeServer_TradeExecution_FullMethodName = "/pb.TradeServer/TradeExecution"
+	TradeServer_GetTradeObtainList_FullMethodName = "/pb.TradeServer/GetTradeObtainList"
+	TradeServer_TradeExecution_FullMethodName     = "/pb.TradeServer/TradeExecution"
+	TradeServer_TradeOrderUpdate_FullMethodName   = "/pb.TradeServer/TradeOrderUpdate"
 )
 
 // TradeServerClient is the client API for TradeServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TradeServerClient interface {
-	GetTradeList(ctx context.Context, in *TradeOrderIdReq, opts ...grpc.CallOption) (*TradeListResp, error)
+	GetTradeObtainList(ctx context.Context, in *TradeObtainReq, opts ...grpc.CallOption) (*TradeListResp, error)
 	TradeExecution(ctx context.Context, in *TradeReq, opts ...grpc.CallOption) (*TradeExecutionResp, error)
+	TradeOrderUpdate(ctx context.Context, in *TradeOrderUpdateReq, opts ...grpc.CallOption) (*TradeOrderUpdateResp, error)
 }
 
 type tradeServerClient struct {
@@ -39,9 +41,9 @@ func NewTradeServerClient(cc grpc.ClientConnInterface) TradeServerClient {
 	return &tradeServerClient{cc}
 }
 
-func (c *tradeServerClient) GetTradeList(ctx context.Context, in *TradeOrderIdReq, opts ...grpc.CallOption) (*TradeListResp, error) {
+func (c *tradeServerClient) GetTradeObtainList(ctx context.Context, in *TradeObtainReq, opts ...grpc.CallOption) (*TradeListResp, error) {
 	out := new(TradeListResp)
-	err := c.cc.Invoke(ctx, TradeServer_GetTradeList_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, TradeServer_GetTradeObtainList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,12 +59,22 @@ func (c *tradeServerClient) TradeExecution(ctx context.Context, in *TradeReq, op
 	return out, nil
 }
 
+func (c *tradeServerClient) TradeOrderUpdate(ctx context.Context, in *TradeOrderUpdateReq, opts ...grpc.CallOption) (*TradeOrderUpdateResp, error) {
+	out := new(TradeOrderUpdateResp)
+	err := c.cc.Invoke(ctx, TradeServer_TradeOrderUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TradeServerServer is the server API for TradeServer service.
 // All implementations must embed UnimplementedTradeServerServer
 // for forward compatibility
 type TradeServerServer interface {
-	GetTradeList(context.Context, *TradeOrderIdReq) (*TradeListResp, error)
+	GetTradeObtainList(context.Context, *TradeObtainReq) (*TradeListResp, error)
 	TradeExecution(context.Context, *TradeReq) (*TradeExecutionResp, error)
+	TradeOrderUpdate(context.Context, *TradeOrderUpdateReq) (*TradeOrderUpdateResp, error)
 	mustEmbedUnimplementedTradeServerServer()
 }
 
@@ -70,11 +82,14 @@ type TradeServerServer interface {
 type UnimplementedTradeServerServer struct {
 }
 
-func (UnimplementedTradeServerServer) GetTradeList(context.Context, *TradeOrderIdReq) (*TradeListResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTradeList not implemented")
+func (UnimplementedTradeServerServer) GetTradeObtainList(context.Context, *TradeObtainReq) (*TradeListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTradeObtainList not implemented")
 }
 func (UnimplementedTradeServerServer) TradeExecution(context.Context, *TradeReq) (*TradeExecutionResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TradeExecution not implemented")
+}
+func (UnimplementedTradeServerServer) TradeOrderUpdate(context.Context, *TradeOrderUpdateReq) (*TradeOrderUpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TradeOrderUpdate not implemented")
 }
 func (UnimplementedTradeServerServer) mustEmbedUnimplementedTradeServerServer() {}
 
@@ -89,20 +104,20 @@ func RegisterTradeServerServer(s grpc.ServiceRegistrar, srv TradeServerServer) {
 	s.RegisterService(&TradeServer_ServiceDesc, srv)
 }
 
-func _TradeServer_GetTradeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TradeOrderIdReq)
+func _TradeServer_GetTradeObtainList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TradeObtainReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TradeServerServer).GetTradeList(ctx, in)
+		return srv.(TradeServerServer).GetTradeObtainList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TradeServer_GetTradeList_FullMethodName,
+		FullMethod: TradeServer_GetTradeObtainList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TradeServerServer).GetTradeList(ctx, req.(*TradeOrderIdReq))
+		return srv.(TradeServerServer).GetTradeObtainList(ctx, req.(*TradeObtainReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -125,6 +140,24 @@ func _TradeServer_TradeExecution_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TradeServer_TradeOrderUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TradeOrderUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TradeServerServer).TradeOrderUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TradeServer_TradeOrderUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TradeServerServer).TradeOrderUpdate(ctx, req.(*TradeOrderUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TradeServer_ServiceDesc is the grpc.ServiceDesc for TradeServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -133,12 +166,16 @@ var TradeServer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TradeServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetTradeList",
-			Handler:    _TradeServer_GetTradeList_Handler,
+			MethodName: "GetTradeObtainList",
+			Handler:    _TradeServer_GetTradeObtainList_Handler,
 		},
 		{
 			MethodName: "TradeExecution",
 			Handler:    _TradeServer_TradeExecution_Handler,
+		},
+		{
+			MethodName: "TradeOrderUpdate",
+			Handler:    _TradeServer_TradeOrderUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

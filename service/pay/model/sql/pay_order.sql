@@ -1,6 +1,7 @@
 CREATE TABLE `pay_order` (
    `id` bigint NOT NULL AUTO_INCREMENT,
    `pay_order_id` varchar(255)  NOT NULL COMMENT '支付订单id',
+   `pay_id` varchar(255) NOT NULL COMMENT '第三方支付的订单号',
    `initiator` varchar(255)  NOT NULL COMMENT '支付的发起者',
    `recipient` varchar(255)  NOT NULL COMMENT '支付接受者',
    `pay_status` int NOT NULL COMMENT '支付状态',

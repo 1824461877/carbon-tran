@@ -53,6 +53,17 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		log.Println(err)
 		return nil
 	}
+
+	client, err := zrpc.NewClient(c.ServiceRpc.PayRpc)
+	if err != nil {
+		//return nil
+	}
+
+	client2, err := zrpc.NewClient(c.ServiceRpc.TradeRpc)
+	if err != nil {
+		//return nil
+	}
+
 	return &ServiceContext{
 		Config: c,
 		RetireCert: RetireCert{
@@ -60,8 +71,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		},
 		ServiceRpc: ServiceRpc{
 			//GsfRpc:   gsfserver.NewGsfServer(zrpc.MustNewClient(c.ServiceRpc.GsfRpc)),
-			PayRpc:   payserver.NewPayServer(zrpc.MustNewClient(c.ServiceRpc.PayRpc)),
-			TradeRpc: tradeserver.NewTradeServer(zrpc.MustNewClient(c.ServiceRpc.TradeRpc)),
+			PayRpc:   payserver.NewPayServer(client),
+			TradeRpc: tradeserver.NewTradeServer(client2),
 		},
 		Middleware: Middleware{
 			AuthJwtMiddleware:   middleware.NewAuthJwtMiddleware(c.ServiceJwtSign.UserServiceAuth, mysqlService.UserDB).Handle,

@@ -17,4 +17,6 @@ const (
 	Incomplete int32 = 2002
 	Sell       int64 = 3001
 	NotSell    int64 = 3002
+
+	PayType int64 = 8990
 )

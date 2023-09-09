@@ -1,9 +1,18 @@
 Name: pay.rpc
 ListenOn: 0.0.0.0:8086
+Timeout: 0
 Etcd:
   Hosts:
   - 127.0.0.1:2379
   Key: pays.rpc
+
+ServiceRpc:
+  TradeRpc:
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: trade.rpc
+    Timeout: 0
 
 CacheRedis:
   - Host: "172.25.41.40:6369"
@@ -15,6 +24,16 @@ PayServiceAuth:
   UserJwtSignExpire: 1000
   JwtSignKey: "5mVuQd8rN8p9sMWpXZKhZGpVmRaO71HEzclKpgL"
   JwtSignExpire: 1000
+
+ServiceMode:
+  PayPalMode:
+    Open: "Sandbox"  # S == Sandbox or L == Live
+    Sandbox:
+      ClientID: "ASVjV4YKjnDclWd6ZiAeTA7XriXIZGyWKDYn9U2PQJFNZ9CQefjCC5VhCFc3leh0B0lHV2lfrnCaZIhu"
+      Secret: "ECa-_rKf0FAWrw96iAocJHbXDV-9IP97F4xjTuUuOJPjZnbYwMsme2dB3S-KYAUQIS9QoCpvTva9Naj4"
+    Live:
+      ClientID: "ASVjV4YKjnDclWd6ZiAeTA7XriXIZGyWKDYn9U2PQJFNZ9CQefjCC5VhCFc3leh0B0lHV2lfrnCaZIhu"
+      Secret: "ECa-_rKf0FAWrw96iAocJHbXDV-9IP97F4xjTuUuOJPjZnbYwMsme2dB3S-KYAUQIS9QoCpvTva9Naj4"
 
 MysqlService:
   WalletMysql:

@@ -2,7 +2,6 @@ package gsf_back
 
 import (
 	"context"
-
 	"gsf/internal/svc"
 	"gsf/internal/types"
 
@@ -25,6 +24,5 @@ func NewChineseTemplateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 
 func (l *ChineseTemplateLogic) ChineseTemplate(req *types.ChineseTemplateRequest) (resp *types.ChineseTemplateResponse, err error) {
 	// todo: add your logic here and delete this line
-
 	return
 }

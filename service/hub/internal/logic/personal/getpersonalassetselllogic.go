@@ -24,7 +24,6 @@ func NewGetPersonalAssetSellLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *GetPersonalAssetSellLogic) GetPersonalAssetSell(req *types.GetPersonalAssetSellReq) (resp []types.GetPersonalAssetSellResp, err error) {
-	// todo: add your logic here and delete this line
 	var (
 		list []types.GetPersonalAssetSellResp
 	)

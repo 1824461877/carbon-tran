@@ -30,9 +30,11 @@ func (l *UserWalletInfoLogic) UserWalletInfo() (resp *types.UserWalletInfoResp, 
 	}
 
 	return &types.UserWalletInfoResp{
-		UserId:     userWallet.UserId,
-		WalletId:   userWallet.WalletId,
-		Amount:     userWallet.Amount,
-		CreateTime: userWallet.CreateTime.String(),
+		UserId:            userWallet.UserId,
+		WalletId:          userWallet.WalletId,
+		DefaultCollection: userWallet.DefaultCollection,
+		WalletType:        userWallet.WalletType,
+		Name:              userWallet.Name,
+		CreateTime:        userWallet.CreateTime.String(),
 	}, nil
 }

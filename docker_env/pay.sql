@@ -15,7 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-USE pay;
 --
 -- Table structure for table `pay_order`
 --
@@ -30,11 +29,12 @@ CREATE TABLE `pay_order` (
                              `recipient` varchar(255) NOT NULL COMMENT '支付接受者',
                              `pay_status` int NOT NULL COMMENT '支付状态',
                              `pay_amount` int NOT NULL COMMENT '支付金额',
+                             `pay_id` varchar(255) NOT NULL COMMENT '第三方支付的订单号',
                              `initiator_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                              `finish_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                              PRIMARY KEY (`id`),
                              UNIQUE KEY `pay_order_id_unique` (`pay_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,6 @@ CREATE TABLE `pay_order` (
 
 LOCK TABLES `pay_order` WRITE;
 /*!40000 ALTER TABLE `pay_order` DISABLE KEYS */;
-INSERT INTO `pay_order` VALUES (52,'a9cc0bed-bd96-3495-b8f7-cdf9841cb61c','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','6bad7442-b629-380d-a6ea-ffa16e3b1aa8',1001,500,'2023-06-14 16:08:25','2023-08-15 14:59:47');
 /*!40000 ALTER TABLE `pay_order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-15 20:23:18
+-- Dump completed on 2023-09-08  3:04:10

@@ -1,9 +1,6 @@
 package model
 
-import (
-	"github.com/zeromicro/go-zero/core/stores/cache"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
-)
+import "github.com/zeromicro/go-zero/core/stores/sqlx"
 
 var _ TradeOrderModel = (*customTradeOrderModel)(nil)
 
@@ -20,8 +17,8 @@ type (
 )
 
 // NewTradeOrderModel returns a model for the database table.
-func NewTradeOrderModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option) TradeOrderModel {
+func NewTradeOrderModel(conn sqlx.SqlConn) TradeOrderModel {
 	return &customTradeOrderModel{
-		defaultTradeOrderModel: newTradeOrderModel(conn, c, opts...),
+		defaultTradeOrderModel: newTradeOrderModel(conn),
 	}
 }

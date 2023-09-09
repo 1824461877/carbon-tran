@@ -11,14 +11,14 @@ import (
 )
 
 type AuthJwtMiddleware struct {
-	DB               sqlx.SqlConn
-	TradeServiceAuth config.TradeServiceAuth
+	DB             sqlx.SqlConn
+	ServiceJwtSign config.ServiceJwtSign
 }
 
 func NewAuthJwtMiddleware(ctx *svc.ServiceContext, c config.Config) *AuthJwtMiddleware {
 	return &AuthJwtMiddleware{
-		DB:               ctx.UserDB,
-		TradeServiceAuth: c.TradeServiceAuth,
+		DB:             ctx.MysqlServiceContext.UserDB,
+		ServiceJwtSign: c.ServiceJwtSign,
 	}
 }
 
@@ -48,7 +48,7 @@ func (ajw *AuthJwtMiddleware) Handle(ctx context.Context, req interface{}, info 
 		return "", errors.New("token is empty")
 	}
 
-	j := NewJwt(ajw.TradeServiceAuth.UserJwtSignKey)
+	j := NewJwt(ajw.ServiceJwtSign.UserServiceAuth.JwtSignKey)
 	if aj, errs = j.ParseToken(token); errs != nil {
 		if errs == TokenExpired {
 			return "", errs

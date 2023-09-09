@@ -38,8 +38,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/exchange/asset_details/:ass_id",
-					Handler: exchange.GetExchangeAssetDetailsHandler(serverCtx),
+					Path:    "/exchange/get_asset_sell",
+					Handler: exchange.GetAssetHandler(serverCtx),
 				},
 			}...,
 		),
@@ -86,6 +86,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/personal/payment_order",
+					Handler: personal.PayOrderPaymentHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/personal/obtain_payment_status",
+					Handler: personal.PayOrderPaymentStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/personal/get_personal_transaction_list",
+					Handler: personal.GetPersonalTransactionListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/personal/sell",
 					Handler: personal.PersonalAssetSellHandler(serverCtx),
 				},
@@ -113,14 +128,14 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/user_wallet/create",
-					Handler: user.UserWalletCreateHandler(serverCtx),
+					Path:    "/user_wallet/add",
+					Handler: user.UserWalletAddHandler(serverCtx),
 				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/user_wallet/login",
-					Handler: user.UserWalletLoginHandler(serverCtx),
-				},
+				//{
+				//	Method:  http.MethodPost,
+				//	Path:    "/user_wallet/login",
+				//	Handler: user.UserWalletLoginHandler(serverCtx),
+				//},
 				{
 					Method:  http.MethodGet,
 					Path:    "/user_wallet/list",

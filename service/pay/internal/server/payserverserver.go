@@ -31,3 +31,13 @@ func (s *PayServerServer) PayExecution(ctx context.Context, in *pb.PayReq) (*pb.
 	l := logic.NewPayExecutionLogic(ctx, s.svcCtx)
 	return l.PayExecution(in)
 }
+
+func (s *PayServerServer) PayOrderStatus(ctx context.Context, in *pb.PayOrderStatusReq) (*pb.PayOrderStatusResp, error) {
+	l := logic.NewPayOrderStatusLogic(ctx, s.svcCtx)
+	return l.PayOrderStatus(in)
+}
+
+func (s *PayServerServer) PayApprove(ctx context.Context, in *pb.PayApproveReq) (*pb.PayApproveResp, error) {
+	l := logic.NewPayApproveLogic(ctx, s.svcCtx)
+	return l.PayApprove(in)
+}

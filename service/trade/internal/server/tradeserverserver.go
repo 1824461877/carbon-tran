@@ -22,12 +22,17 @@ func NewTradeServerServer(svcCtx *svc.ServiceContext) *TradeServerServer {
 	}
 }
 
-func (s *TradeServerServer) GetTradeList(ctx context.Context, in *pb.TradeOrderIdReq) (*pb.TradeListResp, error) {
-	l := logic.NewGetTradeListLogic(ctx, s.svcCtx)
-	return l.GetTradeList(in)
+func (s *TradeServerServer) GetTradeObtainList(ctx context.Context, in *pb.TradeObtainReq) (*pb.TradeListResp, error) {
+	l := logic.NewGetTradeObtainListLogic(ctx, s.svcCtx)
+	return l.GetTradeObtainList(in)
 }
 
 func (s *TradeServerServer) TradeExecution(ctx context.Context, in *pb.TradeReq) (*pb.TradeExecutionResp, error) {
 	l := logic.NewTradeExecutionLogic(ctx, s.svcCtx)
 	return l.TradeExecution(in)
+}
+
+func (s *TradeServerServer) TradeOrderUpdate(ctx context.Context, in *pb.TradeOrderUpdateReq) (*pb.TradeOrderUpdateResp, error) {
+	l := logic.NewTradeOrderUpdateLogic(ctx, s.svcCtx)
+	return l.TradeOrderUpdate(in)
 }

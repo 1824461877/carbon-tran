@@ -31,7 +31,28 @@ message PayExecutionResp {
   string CreateTime = 3;
 }
 
+message PayApproveReq {
+  string PayOrderId = 1;
+}
+
+message PayApproveResp {
+  string PayStatus = 1;
+}
+
+message PayOrderStatusReq {
+  string PayOrderId = 1;
+}
+
+message PayOrderStatusResp {
+  int64 Code = 1;
+  int32 TTL = 2;
+  string PayID = 3;
+  string Status = 4;
+}
+
 service PayServer {
   rpc GetPayList(PayOnceReq) returns(PayListResp);
   rpc PayExecution(PayReq) returns(PayExecutionResp);
+  rpc PayOrderStatus(PayOrderStatusReq) returns(PayOrderStatusResp);
+  rpc PayApprove(PayApproveReq) returns(PayApproveResp);
 }

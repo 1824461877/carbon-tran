@@ -1,6 +1,9 @@
 package model
 
-import "github.com/zeromicro/go-zero/core/stores/sqlx"
+import (
+	"github.com/zeromicro/go-zero/core/stores/cache"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
+)
 
 var _ UserWalletModel = (*customUserWalletModel)(nil)
 
@@ -17,7 +20,7 @@ type (
 )
 
 // NewUserWalletModel returns a model for the database table.
-func NewUserWalletModel(conn sqlx.SqlConn) UserWalletModel {
+func NewUserWalletModel(conn sqlx.SqlConn, opts ...cache.Option) UserWalletModel {
 	return &customUserWalletModel{
 		defaultUserWalletModel: newUserWalletModel(conn),
 	}

@@ -12,6 +12,7 @@ const (
 )
 
 const (
-	Completed  int32 = 2001
-	Incomplete int32 = 2002
+	Completed  int64 = 1002
+	Incomplete int64 = 2002
+	Expire     int64 = 1003
 )

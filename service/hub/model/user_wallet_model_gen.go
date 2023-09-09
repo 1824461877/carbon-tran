@@ -26,8 +26,8 @@ type (
 	userWalletModel interface {
 		Insert(ctx context.Context, data *UserWallet) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*UserWallet, error)
-		FindOneByWalletId(ctx context.Context, walletId string) (*UserWallet, error)
 		FindAllByUserId(ctx context.Context, userId string) (*[]UserWallet, error)
+		FindOneByWalletId(ctx context.Context, walletId string) (*UserWallet, error)
 		Update(ctx context.Context, data *UserWallet) error
 		Delete(ctx context.Context, id int64) error
 	}
@@ -38,15 +38,15 @@ type (
 	}
 
 	UserWallet struct {
-		Id         int64     `db:"id"`
-		WalletId   string    `db:"wallet_id"` // 钱包ID
-		UserId     string    `db:"user_id"`   // 钱包所属用户ID
-		Name       string    `db:"name"`      // 钱包名
-		Password   string    `db:"password"`  // 用户密码
-		Amount     float64   `db:"amount"`    // 钱包余额
-		Salt       string    `db:"salt"`      // 密码salt
-		CreateTime time.Time `db:"create_time"`
-		UpdateTime time.Time `db:"update_time"`
+		Id                int64     `db:"id"`
+		WalletId          string    `db:"wallet_id"`          // 钱包ID
+		UserId            string    `db:"user_id"`            // 钱包所属用户ID
+		Name              string    `db:"name"`               // 钱包名
+		CID               string    `db:"cid"`                // 第三方钱包ID
+		WalletType        int64     `db:"wallet_type"`        // 钱包类型
+		DefaultCollection bool      `db:"default_collection"` // 默认收款
+		CreateTime        time.Time `db:"create_time"`
+		UpdateTime        time.Time `db:"update_time"`
 	}
 )
 
@@ -107,13 +107,13 @@ func (m *defaultUserWalletModel) FindAllByUserId(ctx context.Context, userId str
 
 func (m *defaultUserWalletModel) Insert(ctx context.Context, data *UserWallet) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, userWalletRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.WalletId, data.UserId, data.Name, data.Password, data.Amount, data.Salt)
+	ret, err := m.conn.ExecCtx(ctx, query, data.WalletId, data.UserId, data.Name, data.CID, data.WalletType, data.DefaultCollection)
 	return ret, err
 }
 
 func (m *defaultUserWalletModel) Update(ctx context.Context, newData *UserWallet) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userWalletRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, newData.WalletId, newData.UserId, newData.Name, newData.Password, newData.Amount, newData.Salt, newData.Id)
+	_, err := m.conn.ExecCtx(ctx, query, newData.WalletId, newData.UserId, newData.Name,  newData.CID, newData.WalletType, newData.DefaultCollection, newData.Id)
 	return err
 }
 

@@ -14,4 +14,5 @@ const (
 const (
 	Unpaid int32 = 1001
 	Paid   int32 = 1002
+	Expire int32 = 1003
 )

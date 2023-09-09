@@ -13,15 +13,18 @@ import (
 )
 
 type (
-	TradeExecutionResp = pb.TradeExecutionResp
-	TradeListResp      = pb.TradeListResp
-	TradeOnceResp      = pb.TradeOnceResp
-	TradeOrderIdReq    = pb.TradeOrderIdReq
-	TradeReq           = pb.TradeReq
+	TradeExecutionResp   = pb.TradeExecutionResp
+	TradeListResp        = pb.TradeListResp
+	TradeObtainReq       = pb.TradeObtainReq
+	TradeOnceResp        = pb.TradeOnceResp
+	TradeOrderUpdateReq  = pb.TradeOrderUpdateReq
+	TradeOrderUpdateResp = pb.TradeOrderUpdateResp
+	TradeReq             = pb.TradeReq
 
 	TradeServer interface {
-		GetTradeList(ctx context.Context, in *TradeOrderIdReq, opts ...grpc.CallOption) (*TradeListResp, error)
+		GetTradeObtainList(ctx context.Context, in *TradeObtainReq, opts ...grpc.CallOption) (*TradeListResp, error)
 		TradeExecution(ctx context.Context, in *TradeReq, opts ...grpc.CallOption) (*TradeExecutionResp, error)
+		TradeOrderUpdate(ctx context.Context, in *TradeOrderUpdateReq, opts ...grpc.CallOption) (*TradeOrderUpdateResp, error)
 	}
 
 	defaultTradeServer struct {
@@ -35,12 +38,17 @@ func NewTradeServer(cli zrpc.Client) TradeServer {
 	}
 }
 
-func (m *defaultTradeServer) GetTradeList(ctx context.Context, in *TradeOrderIdReq, opts ...grpc.CallOption) (*TradeListResp, error) {
+func (m *defaultTradeServer) GetTradeObtainList(ctx context.Context, in *TradeObtainReq, opts ...grpc.CallOption) (*TradeListResp, error) {
 	client := pb.NewTradeServerClient(m.cli.Conn())
-	return client.GetTradeList(ctx, in, opts...)
+	return client.GetTradeObtainList(ctx, in, opts...)
 }
 
 func (m *defaultTradeServer) TradeExecution(ctx context.Context, in *TradeReq, opts ...grpc.CallOption) (*TradeExecutionResp, error) {
 	client := pb.NewTradeServerClient(m.cli.Conn())
 	return client.TradeExecution(ctx, in, opts...)
+}
+
+func (m *defaultTradeServer) TradeOrderUpdate(ctx context.Context, in *TradeOrderUpdateReq, opts ...grpc.CallOption) (*TradeOrderUpdateResp, error) {
+	client := pb.NewTradeServerClient(m.cli.Conn())
+	return client.TradeOrderUpdate(ctx, in, opts...)
 }

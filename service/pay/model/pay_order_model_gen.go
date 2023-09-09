@@ -43,6 +43,7 @@ type (
 	PayOrder struct {
 		Id            int64     `db:"id"`
 		PayOrderId    string    `db:"pay_order_id"` // 支付订单id
+		PayId         string    `db:"pay_id"`       // 第三方支付的订单号
 		Initiator     string    `db:"initiator"`    // 支付的发起者
 		Recipient     string    `db:"recipient"`    // 支付接受者
 		PayStatus     int64     `db:"pay_status"`   // 支付状态
@@ -115,8 +116,8 @@ func (m *defaultPayOrderModel) Insert(ctx context.Context, data *PayOrder) (sql.
 	payOrderIdKey := fmt.Sprintf("%s%v", cachePayOrderIdPrefix, data.Id)
 	payOrderPayOrderIdKey := fmt.Sprintf("%s%v", cachePayOrderPayOrderIdPrefix, data.PayOrderId)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, payOrderRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.PayOrderId, data.Initiator, data.Recipient, data.PayStatus, data.PayAmount, data.InitiatorTime, data.FinishTime)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, payOrderRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.PayOrderId, data.PayId, data.Initiator, data.Recipient, data.PayStatus, data.PayAmount, data.InitiatorTime, data.FinishTime)
 	}, payOrderIdKey, payOrderPayOrderIdKey)
 	return ret, err
 }
@@ -131,7 +132,7 @@ func (m *defaultPayOrderModel) Update(ctx context.Context, newData *PayOrder) er
 	payOrderPayOrderIdKey := fmt.Sprintf("%s%v", cachePayOrderPayOrderIdPrefix, data.PayOrderId)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, payOrderRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, newData.PayOrderId, newData.Initiator, newData.Recipient, newData.PayStatus, newData.PayAmount, newData.InitiatorTime, newData.FinishTime, newData.Id)
+		return conn.ExecCtx(ctx, query, newData.PayOrderId, newData.PayId, newData.Initiator, newData.Recipient, newData.PayStatus, newData.PayAmount, newData.InitiatorTime, newData.FinishTime, newData.Id)
 	}, payOrderIdKey, payOrderPayOrderIdKey)
 	return err
 }

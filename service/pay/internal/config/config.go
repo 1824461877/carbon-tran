@@ -9,6 +9,8 @@ type Config struct {
 	zrpc.RpcServerConf
 	CacheRedis     cache.CacheConf
 	PayServiceAuth PayServiceAuth
+	ServiceMode    ServiceMode
+	ServiceRpc     ServiceRpc
 	MysqlService   MysqlService
 }
 
@@ -26,4 +28,23 @@ type PayServiceAuth struct {
 	UserJwtSignExpire int64
 	JwtSignKey        string
 	JwtSignExpire     int64
+}
+
+type ServiceMode struct {
+	PayPalMode PayPalMode
+}
+
+type PayPalMode struct {
+	Open    string
+	Sandbox PalMode
+	Live    PalMode
+}
+
+type PalMode struct {
+	ClientID string
+	Secret   string
+}
+
+type ServiceRpc struct {
+	TradeRpc zrpc.RpcClientConf
 }

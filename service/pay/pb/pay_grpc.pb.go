@@ -19,8 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PayServer_GetPayList_FullMethodName   = "/pb.PayServer/GetPayList"
-	PayServer_PayExecution_FullMethodName = "/pb.PayServer/PayExecution"
+	PayServer_GetPayList_FullMethodName     = "/pb.PayServer/GetPayList"
+	PayServer_PayExecution_FullMethodName   = "/pb.PayServer/PayExecution"
+	PayServer_PayOrderStatus_FullMethodName = "/pb.PayServer/PayOrderStatus"
+	PayServer_PayApprove_FullMethodName     = "/pb.PayServer/PayApprove"
 )
 
 // PayServerClient is the client API for PayServer service.
@@ -29,6 +31,8 @@ const (
 type PayServerClient interface {
 	GetPayList(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayListResp, error)
 	PayExecution(ctx context.Context, in *PayReq, opts ...grpc.CallOption) (*PayExecutionResp, error)
+	PayOrderStatus(ctx context.Context, in *PayOrderStatusReq, opts ...grpc.CallOption) (*PayOrderStatusResp, error)
+	PayApprove(ctx context.Context, in *PayApproveReq, opts ...grpc.CallOption) (*PayApproveResp, error)
 }
 
 type payServerClient struct {
@@ -57,12 +61,32 @@ func (c *payServerClient) PayExecution(ctx context.Context, in *PayReq, opts ...
 	return out, nil
 }
 
+func (c *payServerClient) PayOrderStatus(ctx context.Context, in *PayOrderStatusReq, opts ...grpc.CallOption) (*PayOrderStatusResp, error) {
+	out := new(PayOrderStatusResp)
+	err := c.cc.Invoke(ctx, PayServer_PayOrderStatus_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *payServerClient) PayApprove(ctx context.Context, in *PayApproveReq, opts ...grpc.CallOption) (*PayApproveResp, error) {
+	out := new(PayApproveResp)
+	err := c.cc.Invoke(ctx, PayServer_PayApprove_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PayServerServer is the server API for PayServer service.
 // All implementations must embed UnimplementedPayServerServer
 // for forward compatibility
 type PayServerServer interface {
 	GetPayList(context.Context, *PayOnceReq) (*PayListResp, error)
 	PayExecution(context.Context, *PayReq) (*PayExecutionResp, error)
+	PayOrderStatus(context.Context, *PayOrderStatusReq) (*PayOrderStatusResp, error)
+	PayApprove(context.Context, *PayApproveReq) (*PayApproveResp, error)
 	mustEmbedUnimplementedPayServerServer()
 }
 
@@ -75,6 +99,12 @@ func (UnimplementedPayServerServer) GetPayList(context.Context, *PayOnceReq) (*P
 }
 func (UnimplementedPayServerServer) PayExecution(context.Context, *PayReq) (*PayExecutionResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PayExecution not implemented")
+}
+func (UnimplementedPayServerServer) PayOrderStatus(context.Context, *PayOrderStatusReq) (*PayOrderStatusResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PayOrderStatus not implemented")
+}
+func (UnimplementedPayServerServer) PayApprove(context.Context, *PayApproveReq) (*PayApproveResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PayApprove not implemented")
 }
 func (UnimplementedPayServerServer) mustEmbedUnimplementedPayServerServer() {}
 
@@ -125,6 +155,42 @@ func _PayServer_PayExecution_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PayServer_PayOrderStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PayOrderStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PayServerServer).PayOrderStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PayServer_PayOrderStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PayServerServer).PayOrderStatus(ctx, req.(*PayOrderStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PayServer_PayApprove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PayApproveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PayServerServer).PayApprove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PayServer_PayApprove_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PayServerServer).PayApprove(ctx, req.(*PayApproveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PayServer_ServiceDesc is the grpc.ServiceDesc for PayServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +205,14 @@ var PayServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PayExecution",
 			Handler:    _PayServer_PayExecution_Handler,
+		},
+		{
+			MethodName: "PayOrderStatus",
+			Handler:    _PayServer_PayOrderStatus_Handler,
+		},
+		{
+			MethodName: "PayApprove",
+			Handler:    _PayServer_PayApprove_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

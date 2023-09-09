@@ -21,11 +21,6 @@ func NewGsfServerServer(svcCtx *svc.ServiceContext) *GsfServerServer {
 	}
 }
 
-func (s *GsfServerServer) GetTradeList(ctx context.Context, in *pb.TradeOrderIdReq) (*pb.TradeListResp, error) {
-	l := logic.NewGetTradeListLogic(ctx, s.svcCtx)
-	return l.GetTradeList(in)
-}
-
 func (s *GsfServerServer) TradeExecution(ctx context.Context, in *pb.TradeReq) (*pb.TradeExecutionResp, error) {
 	l := logic.NewTradeExecutionLogic(ctx, s.svcCtx)
 	return l.TradeExecution(in)

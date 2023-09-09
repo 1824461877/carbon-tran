@@ -15,8 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-USE carbon;
-
 --
 -- Table structure for table `assets`
 --
@@ -45,7 +43,7 @@ CREATE TABLE `assets` (
                           `listing` tinyint(1) NOT NULL COMMENT '挂牌',
                           `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '资产创建时间',
                           PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +52,7 @@ CREATE TABLE `assets` (
 
 LOCK TABLES `assets` WRITE;
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
-INSERT INTO `assets` VALUES (1,'ab082c70-644a-3711-ac28-d4755b79d26a','H102771824-85975-85975','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','gsf',5,0,'Houji太阳能炊具项目','GS7604','issued','中国','太阳热能','VER',85975,85979,'GS1-1-CN-GS7604-3-2020-21289',2020,0,'2023-06-10 15:53:13');
+INSERT INTO `assets` VALUES (1,'8627361a-a3e6-3836-83de-7d1c8af690e2','H2930235125-85974-85974','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','gsf',3,2,'Houji太阳能炊具项目','GS7604','issued','中国','太阳热能','VER',85971,85976,'GS1-1-CN-GS7604-3-2020-21289',2020,0,'2023-09-07 01:34:03'),(23,'e331bcd8-d48f-3736-a494-ca7b5d2f2b3a','H2606604266-85978-85978','3cc4fc18-b22f-3121-a3aa-c110174b1fb0','gsf',1,0,'Houji太阳能炊具项目','GS7604','issued','中国','太阳热能','VER',85978,85978,'GS1-1-CN-GS7604-3-2020-21289',2020,0,'2023-09-07 17:55:59'),(25,'5724336a-7727-3d68-916f-3ad133101424','H3956430617-85977-85977','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','gsf',1,0,'Houji太阳能炊具项目','GS7604','issued','中国','太阳热能','VER',85977,85977,'GS1-1-CN-GS7604-3-2020-21289',2020,0,'2023-09-07 18:04:38');
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,7 +75,7 @@ CREATE TABLE `assets_sell` (
                                `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '交易创建时间',
                                `end_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '交易结束时间',
                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +104,7 @@ CREATE TABLE `retire` (
                           `certificate_link` varchar(255) NOT NULL COMMENT '证书访问link',
                           `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注销时间',
                           PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,6 +113,7 @@ CREATE TABLE `retire` (
 
 LOCK TABLES `retire` WRITE;
 /*!40000 ALTER TABLE `retire` DISABLE KEYS */;
+INSERT INTO `retire` VALUES (13,'37cfaedf-bd6e-32dc-961f-c0b05a99e70a','0f4255a8-6f5a-3727-9648-e8aa27ec500f','6bad7442-b629-380d-a6ea-ffa16e3b1aa8',1,1001,'07529dbe-6559-3a44-86f1-60a150bd9588','2023-09-07 15:53:47'),(14,'5dc3d0b6-5b6f-33a4-9278-c0c8bf8a18ac','8627361a-a3e6-3836-83de-7d1c8af690e2','6bad7442-b629-380d-a6ea-ffa16e3b1aa8',1,1001,'fb28e3d5-8dfe-36a5-82c5-9cb645aededd','2023-09-07 16:11:51');
 /*!40000 ALTER TABLE `retire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,14 +129,14 @@ CREATE TABLE `user_wallet` (
                                `wallet_id` varchar(255) NOT NULL COMMENT '钱包ID',
                                `user_id` varchar(255) NOT NULL COMMENT '钱包所属用户ID',
                                `name` varchar(255) NOT NULL COMMENT '钱包名',
-                               `password` varchar(255) NOT NULL COMMENT '用户密码',
-                               `amount` double NOT NULL COMMENT '钱包余额',
-                               `salt` varchar(255) NOT NULL COMMENT '密码salt',
+                               `cid` varchar(255) NOT NULL COMMENT '第三方钱包id',
+                               `wallet_type` int NOT NULL COMMENT '钱包类型',
+                               `default_collection` tinyint(1) NOT NULL COMMENT '默认收款',
                                `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                PRIMARY KEY (`id`),
                                UNIQUE KEY `wallet_id_unique` (`wallet_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +145,7 @@ CREATE TABLE `user_wallet` (
 
 LOCK TABLES `user_wallet` WRITE;
 /*!40000 ALTER TABLE `user_wallet` DISABLE KEYS */;
-INSERT INTO `user_wallet` VALUES (1,'d87e60be-5e75-3d17-81c6-58da08f1e7c9','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','钱包1','dc9ebbd924a85429dbffab825ab6bd73c3a75d444147264a6199dcfe7034afbd',490.1,'7c36344a-a198-3329-9b99-a9814f5d70401686411923445321500','2023-06-10 11:56:05','2023-06-10 16:22:34'),(2,'f25dacb8-1d10-3bd0-88c6-dcdcf7bb90df','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','钱包2','e05564178142b35a0f7cac5e6bec637cc906ecce2703a327fc23aa9903a568e8',3820.3,'21781fe3-b040-3d74-97f2-140726cc222f1686416419192786800','2023-06-10 13:17:15','2023-06-10 16:22:34'),(4,'836580f0-6d7f-3773-b835-f4adf57bf2dc','3cc4fc18-b22f-3121-a3aa-c110174b1fb0','Jos钱包1','e1f4f1620b1006da9e7a186778f5839792d9e4954e7608727ae93a73ec24a379',4800.9,'c0b93017-ce13-331b-9011-4ce21099a19b1686439205085937600','2023-06-10 16:08:11','2023-06-10 16:22:34');
+INSERT INTO `user_wallet` VALUES (9,'5aca447a-a2a2-3a83-984e-44e30380609c','6bad7442-b629-380d-a6ea-ffa16e3b1aa8','C2','sb-rx5di26566864@personal.example.com',8990,1,'2023-09-07 04:27:54','2023-09-07 04:27:54');
 /*!40000 ALTER TABLE `user_wallet` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -159,4 +158,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-21  1:23:15
+-- Dump completed on 2023-09-08  3:04:18

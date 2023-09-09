@@ -7,12 +7,18 @@ import (
 
 type Config struct {
 	zrpc.RpcServerConf
-	CacheRedis       cache.CacheConf
-	TradeServiceAuth TradeServiceAuth
-	MysqlService     MysqlService
+	CacheRedis     cache.CacheConf
+	ServiceJwtSign ServiceJwtSign
+	ServiceRpc     ServiceRpc
+	MysqlService   MysqlService
+}
+
+type ServiceRpc struct {
+	PayRpc zrpc.RpcClientConf
 }
 
 type MysqlService struct {
+	HubMysql   Mysql
 	UserMysql  Mysql
 	TradeMysql Mysql
 }
@@ -21,9 +27,13 @@ type Mysql struct {
 	DataSourceName string
 }
 
-type TradeServiceAuth struct {
-	UserJwtSignKey    string
-	UserJwtSignExpire int64
-	JwtSignKey        string
-	JwtSignExpire     int64
+type ServiceJwtSign struct {
+	UserServiceAuth  ServiceAuth
+	PayServiceAuth   ServiceAuth
+	TradeServiceAuth ServiceAuth
+}
+
+type ServiceAuth struct {
+	JwtSignKey    string
+	JwtSignExpire int64
 }

@@ -24,8 +24,6 @@ func NewUserWalletListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 }
 
 func (l *UserWalletListLogic) UserWalletList() (resp *types.UserWalletListResp, err error) {
-	// todo: add your logic here and delete this line
-
 	var userWalltList *[]model.UserWallet
 	userWalltList, err = l.svcCtx.MysqlServiceContext.UserWallet.FindAllByUserId(l.ctx, l.ctx.Value("uid").(string))
 	if err != nil {
@@ -34,10 +32,12 @@ func (l *UserWalletListLogic) UserWalletList() (resp *types.UserWalletListResp, 
 
 	var list []types.WalletOnce
 	for _, v := range *userWalltList {
+
 		list = append(list, types.WalletOnce{
-			Name:     v.Name,
-			Amount:   v.Amount,
-			WalletId: v.WalletId,
+			Name:              v.Name,
+			WalletId:          v.WalletId,
+			DefaultCollection: v.DefaultCollection,
+			WalletType:        v.WalletType,
 		})
 	}
 

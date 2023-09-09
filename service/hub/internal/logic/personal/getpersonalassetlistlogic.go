@@ -24,7 +24,6 @@ func NewGetPersonalAssetListLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *GetPersonalAssetListLogic) GetPersonalAssetList() (resp *types.PersonalAssetListResp, err error) {
-	// todo: add your logic here and delete this line
 	result, err := l.svcCtx.MysqlServiceContext.Assets.FindUidAll(context.Background(), l.ctx.Value("uid").(string))
 	if err != nil {
 		return nil, err

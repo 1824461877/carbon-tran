@@ -24,7 +24,6 @@ func NewGetPersonalAssetRetireLogic(ctx context.Context, svcCtx *svc.ServiceCont
 }
 
 func (l *GetPersonalAssetRetireLogic) GetPersonalAssetRetire(uid string) (resp *types.GetPersonalAssetRetireResp, err error) {
-	// todo: add your logic here and delete this line
 	var all *[]model.Retire
 	if all, err = l.svcCtx.MysqlServiceContext.Retire.FindALLByUserId(l.ctx, uid); err != nil {
 		return nil, err

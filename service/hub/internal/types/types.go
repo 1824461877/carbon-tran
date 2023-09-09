@@ -3,6 +3,8 @@ package types
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	pb2 "pay/pb"
+	"trade/pb"
 )
 
 type Ping struct {
@@ -10,14 +12,37 @@ type Ping struct {
 }
 
 type ExchangeAssetTransactionReq struct {
-	InitiatorWalletId 	string  			`json:"initiator_wallet_id"`
 	ExId   			  	string 			   	`json:"ex_id"`
 	Number 				int64             	`json:"number"`
 }
 
 type ExchangeAssetTransactionResp struct {
+	Code    int     `json:"code"`
+	OrderId string  `json:"order_id"`
+	Messing string  `json:"messing"`
+}
+
+type GetAssetTradeInfoResp struct {
+	Code    int     	   `json:"code"`
+	Assets *GetAssetTradeInfoOnce `json:"assets"`
+}
+
+type GetAssetTradeInfoOnce struct {
+	ExId   		string  `json:"ex_id"`
+	AID    		string  `json:"aid"`
+	UserId      string  `json:"user_id"`
+	Project     string  `json:"project"`
+	Amount 		float64 `json:"amount"`
+}
+
+type PayOrderResp struct {
 	Code    int    `json:"code"`
-	Messing string `json:"messing"`
+	Messing string  `json:"messing"`
+}
+
+type PayOrderStatusResp struct {
+	Code    int    `json:"code"`
+	PayOrderStatusResp *pb2.PayOrderStatusResp `json:"pay_order_status_resp"`
 }
 
 type ExchangeAssetDetailsReq struct {
@@ -61,6 +86,20 @@ type ExchangeAssetListResp struct {
 type PersonalAssetRetireReq struct {
 	AssId       string  `json:"ass_id"`
 	Number      int64   `json:"number"`
+}
+
+type PayOrderReq struct {
+	PayOrderId       string  `json:"pay_order_id"`
+}
+
+
+type GetObtainTransactionReq struct {
+	State  string `form:"state,optional"`
+}
+
+type ObtainTransactionResp struct {
+	Code       	  int    	          `json:"code"`
+	TradeOnceResp []*pb.TradeOnceResp `json:"trade_once_resp"`
 }
 
 type PersonalAssetOnceResp struct {
@@ -109,6 +148,10 @@ type GetPersonalAssetSellReq struct {
 	ExId   string `form:"ex_id,optional"`
 }
 
+type GetAssetSellReq struct {
+	ExID   string `form:"ex_id,optional"`
+}
+
 type PersonalAssetSellReq struct {
 	AssId  			   string   `json:"ass_id,optional"`
 	CollectionWalletId string   `json:"collection_wallet_id"`
@@ -138,6 +181,12 @@ type UserWalletCreateReq struct {
 	Password string `json:"password"`
 }
 
+type UserWalletAddReq struct {
+	Name     string `json:"name"`
+	CID 	 string `json:"c_id"`
+	CType    string `json:"c_type"`
+}
+
 type UserWalletCreateResp struct {
 	Code int `json:"code"`
 	Message string `json:"message"`
@@ -149,9 +198,11 @@ type UserWalletReq struct {
 
 type UserWalletInfoResp struct {
 	UserId string `json:"user_id"`
-	WalletId   string `json:"wallet_id"`
-	Amount     float64 `json:"amount"`
 	CreateTime string `json:"create_time"`
+	Name 	 string `json:"name"`
+	DefaultCollection bool `json:"default_collection"`
+	WalletId string `json:"wallet_id"`
+	WalletType int64 `json:"wallet_type"`
 }
 
 type UserWalletLoginReq struct {
@@ -170,10 +221,13 @@ type UserWalletListResp struct {
 
 
 type TradeOrder struct {
-	PayOrderId    string `json:"pay_order_id"`    // 支付订单id
-	CarbonAssetId string `json:"carbon_asset_id"` // 用户密码
-	Initiator     string `json:"initiator"`       // 交易的发起者
-	Recipient     string `json:"recipient"`       // 交易接受者
+	Uid             string  `json:"uid"`
+	PayAmount       float64 `json:"pay_amount"`
+	Number          int64   `json:"number"`
+	CollectionID    string  `json:"collection_id"`
+	ExchangeAssetID string  `json:"exchange_asset_id"`
+	Initiator       string  `json:"initiator"` // 交易的发起者
+	Recipient       string  `json:"recipient"` // 交易接受者
 	jwt.StandardClaims
 }
 
@@ -183,13 +237,14 @@ type PayOrder struct {
 	Recipient         string `json:"recipient"` // 支付接受者
 	InitiatorWalletId string `json:"initiator_wallet_id"`
 	RecipientWalletId string `json:"recipient_wallet_id"`
-	PayAmount         float64  `json:"pay_amount"` // 支付金额
+	PayAmount         float64 `json:"pay_amount"` // 支付金额
 	jwt.StandardClaims
 }
 
 
 type WalletOnce struct{
 	Name 	 string `json:"name"`
-	Amount   float64 `json:"amount"`
+	DefaultCollection bool `json:"default_collection"`
 	WalletId string `json:"wallet_id"`
+	WalletType int64 `json:"wallet_type"`
 }
