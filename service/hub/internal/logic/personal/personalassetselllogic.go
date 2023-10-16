@@ -50,7 +50,7 @@ func (l *PersonalAssetSellLogic) PersonalAssetSell(req *types.PersonalAssetSellR
 				return nil, errors.New("incorrect quantity")
 			}
 		}
-		
+
 		if req.Amount <= 0 {
 			return nil, errors.New("incorrect amount value")
 		}
@@ -62,6 +62,7 @@ func (l *PersonalAssetSellLogic) PersonalAssetSell(req *types.PersonalAssetSellR
 				ExId:               ExId,
 				UserId:             uid,
 				AssId:              req.AssId,
+				Country:            asset.Country,
 				Amount:             req.Amount,
 				CollectionWalletId: req.CollectionWalletId,
 				Source:             asset.Source,

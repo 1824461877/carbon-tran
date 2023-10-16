@@ -28,32 +28,17 @@ func NewAssetExchangeTransactionLogic(ctx context.Context, svcCtx *svc.ServiceCo
 func (l *AssetExchangeTransactionLogic) AssetExchangeTransaction(req *types.ExchangeAssetTransactionReq) (resp *types.ExchangeAssetTransactionResp, err error) {
 	// todo: add your logic here and delete this line
 	var (
-		//val        string
 		TradeToken string
 		//PayToken string
 		times    = time.Now()
 		as       = &model.AssetsSell{}
 		tPayResp *pb.TradeExecutionResp
 		uw       *model.UserWallet
-		//_          *tradedb.TradeExecutionResp
 	)
 
 	if as, err = l.svcCtx.MysqlServiceContext.AssetsSell.FindOneByExId(l.ctx, req.ExId); err != nil {
 		return nil, err
 	}
-	//if val, err = l.svcCtx.Redis.GetCtx(l.ctx, "exchange_"+req.ExId); err != nil {
-	//	fmt.Println(err)
-	//	return nil, err
-	//}
-	//
-	//if err != json.Unmarshal([]byte(val), &as) {
-	//	return nil, err
-	//}
-
-	//if (as.Number - req.Number) < 0 {
-	//	return nil, errors.New("wrong number of transactions")
-	//}
-	//
 
 	uw, err = l.svcCtx.MysqlServiceContext.UserWallet.FindOneByWalletId(l.ctx, as.CollectionWalletId)
 	if err != nil {
@@ -81,19 +66,6 @@ func (l *AssetExchangeTransactionLogic) AssetExchangeTransaction(req *types.Exch
 			Messing: "no have wallet",
 		}, nil
 	}
-	//
-	//if PayToken, err = l.PayExecution(types.PayOrder{
-	//	InitiatorWalletId: req.InitiatorWalletId,
-	//	RecipientWalletId: as.CollectionWalletId,
-	//	PayAmount:         as.Amount * float64(req.Number),
-	//	Initiator:         l.ctx.Value("uid").(string),
-	//	Recipient:         as.UserId,
-	//	StandardClaims: jwt.StandardClaims{
-	//		ExpiresAt: time.Now().Add(time.Duration(l.svcCtx.Config.ServiceJwtSign.PayServiceAuth.JwtSignExpire) * time.Minute).Unix(),
-	//	},
-	//}); err != nil {
-	//	return nil, err
-	//}
 
 	if tPayResp, err = l.svcCtx.ServiceRpc.TradeRpc.TradeExecution(l.ctx, &pb.TradeReq{
 		TaskToken: TradeToken,
@@ -101,75 +73,6 @@ func (l *AssetExchangeTransactionLogic) AssetExchangeTransaction(req *types.Exch
 	}); err != nil {
 		return nil, err
 	}
-
-	//if payResp, err = l.svcCtx.ServiceRpc.PayRpc.PayExecution(l.ctx, &pb.PayReq{
-	//	TaskToken: PayToken,
-	//	ReqTime:   times.String(),
-	//}); err != nil {
-	//	return nil, err
-	//}
-
-	//if payResp.PayStatus == types.Paid {
-	//	var (
-	//		assets *model.Assets
-	//		errs   error
-	//	)
-	//	assets, errs = l.svcCtx.MysqlServiceContext.Assets.FindAssIdOne(l.ctx, as.AssId)
-	//	if err != nil {
-	//		return nil, errs
-	//	}
-	//
-	//	if (assets.Number - req.Number) < 0 {
-	//		return nil, errors.New("wrong number of transactions")
-	//	}
-	//
-	//	var (
-	//		VersTail int64
-	//		OldAssID string
-	//	)
-	//	OldAssID = assets.AssId
-	//	VersTail = assets.VersTail
-	//	assets.Number = assets.Number - req.Number
-	//	assets.VersTail = assets.VersTail - req.Number
-	//	if assets.Number == 0 {
-	//		if errs = l.svcCtx.MysqlServiceContext.Assets.Delete(l.ctx, assets.Id); err != nil {
-	//			return nil, errs
-	//		}
-	//	} else {
-	//		if errs = l.svcCtx.MysqlServiceContext.Assets.Update(l.ctx, assets); err != nil {
-	//			return nil, errs
-	//		}
-	//	}
-	//	assets.AssId = hu.AID()
-	//	assets.UserId = l.ctx.Value("uid").(string)
-	//	assets.Number = req.Number
-	//	assets.VersHead = assets.VersTail + 1
-	//	assets.VersTail = VersTail
-	//	assets.Hid = fmt.Sprintf("%v-%v-%v", hu.HID(), assets.VersHead, assets.VersTail)
-	//	assets.CreateTime = time.Now()
-	//	assets.Listing = false
-	//	if _, errs = l.svcCtx.MysqlServiceContext.Assets.Insert(l.ctx, assets); errs != nil {
-	//		return nil, errs
-	//	}
-	//
-	//	if (as.Number - req.Number) == 0 {
-	//		_, err = l.svcCtx.Redis.DelCtx(l.ctx, "exchange_"+req.ExId)
-	//		if err != nil {
-	//			return nil, err
-	//		}
-	//		_ = l.svcCtx.MysqlServiceContext.Assets.UpdateListing(l.ctx, &model.Assets{
-	//			AssId:   OldAssID,
-	//			Listing: false,
-	//		})
-	//	} else {
-	//		as.Number = as.Number - req.Number
-	//		if err = l.svcCtx.MysqlServiceContext.AssetsSell.Update(l.ctx, as); err != nil {
-	//			return nil, err
-	//		}
-	//	}
-	//} else {
-	//	return nil, errors.New("pay error")
-	//}
 
 	return &types.ExchangeAssetTransactionResp{
 		Code:    types.SuccessCode,

@@ -72,7 +72,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	client, err := zrpc.NewClient(c.ServiceRpc.TradeRpc)
 	if err != nil {
-		//return nil
+		return nil
 	}
 
 	return &ServiceContext{

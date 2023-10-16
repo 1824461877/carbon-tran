@@ -39,7 +39,7 @@ func NewPayExecutionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PayE
 	}
 }
 
-//func (l *PayExecutionLogic) PayExecution(in *pb.PayReq) (*pb.PayExecutionResp, error) {
+//func (l *PayExecutionLogic) PayExecution(in *proto.PayReq) (*proto.PayExecutionResp, error) {
 //	todo: add your logic here and delete this line
 //	var (
 //		claims *types.PayOrder
@@ -89,7 +89,7 @@ func NewPayExecutionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PayE
 //		return nil, err
 //	}
 //
-//	return &pb.PayExecutionResp{
+//	return &proto.PayExecutionResp{
 //		PayOrderId: PID,
 //		PayStatus:  PayStatus,
 //		CreateTime: times.String(),
@@ -166,6 +166,7 @@ func (l *PayExecutionLogic) PayExecution(in *pb.PayReq) (*pb.PayExecutionResp, e
 		PayStatus:     int64(PayStatus),
 		PayAmount:     int64(claims.PayAmount),
 		InitiatorTime: times,
+		FinishTime:    times,
 	}
 
 	if data, err = json.Marshal(po); err != nil {
@@ -176,17 +177,18 @@ func (l *PayExecutionLogic) PayExecution(in *pb.PayReq) (*pb.PayExecutionResp, e
 		return nil, err
 	}
 
-	//if _, err = l.svcCtx.PayOrder.Insert(l.ctx, &model.PayOrder{
-	//	PayOrderId:    PID,
-	//	Initiator:     claims.Initiator,
-	//	PayId:         order.ID,
-	//	Recipient:     claims.Recipient,
-	//	PayStatus:     int64(PayStatus),
-	//	PayAmount:     int64(claims.PayAmount),
-	//	InitiatorTime: times,
-	//}); err != nil {
-	//	return nil, err
-	//}
+	if _, err = l.svcCtx.PayOrder.Insert(l.ctx, &model.PayOrder{
+		PayOrderId:    PID,
+		Initiator:     claims.Initiator,
+		PayId:         order.ID,
+		Recipient:     claims.Recipient,
+		PayStatus:     int64(PayStatus),
+		PayAmount:     int64(claims.PayAmount),
+		InitiatorTime: times,
+		FinishTime:    times,
+	}); err != nil {
+		return nil, err
+	}
 
 	return &pb.PayExecutionResp{
 		PayOrderId: PID,

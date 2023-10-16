@@ -46,7 +46,7 @@ type PayOrderStatusResp struct {
 }
 
 type ExchangeAssetDetailsReq struct {
-	AssId string             `json:"assId"`
+	ExId string             `form:"ex_id"`
 }
 
 type RetireFile struct {
@@ -54,6 +54,7 @@ type RetireFile struct {
 }
 
 type ExchangeAssetDetailsResp struct {
+	ExchangeAssetOnceResp ExchangeAssetOnceResp `json:"exchange_asset_once_resp"`
 }
 
 type ExchangeAssetOnceResp struct {
@@ -76,12 +77,32 @@ type ExchangeAssetOnceResp struct {
 }
 
 type ExchangeAssetListReq struct {
-	ExId   string `form:"ex_id,optional"`
+	SourceTabulation   string `form:"source_tabulation,optional"`
+	Search 			   string `form:"search,optional"`
+	LocationTabulation string `form:"location_tabulation,optional"`
 }
 
 type ExchangeAssetListResp struct {
 	ExchangeAssetList []ExchangeAssetOnceResp `json:"exchange_asset_list"`
+	ExchangeAssetTabulationResp ExchangeAssetTabulationResp `json:"exchange_asset_tabulation_resp"`
 }
+
+type ExchangeAssetTabulationResp struct {
+	SourceTabulation   []string `json:"source_tabulation"`
+	Stand 			   []Stand    `json:"stand"`
+	LocationTabulation []string `json:"location_tabulation"`
+}
+
+type Stand struct {
+	Name string `json:"name"`
+	Val  int    `json:"val"`
+}
+
+
+type PersonalAssetDetailsReq struct {
+	AssId       string  `form:"ass_id"`
+}
+
 
 type PersonalAssetRetireReq struct {
 	AssId       string  `json:"ass_id"`
@@ -125,6 +146,7 @@ type PersonalAssetOnceResp struct {
 type PersonalAssetListResp struct {
 	PersonalAssetList []PersonalAssetOnceResp `json:"personal_asset_list"`
 }
+
 
 type GetPersonalAssetRetireResp struct {
 	RetireList []RetireOnce `json:"retire_list"`
@@ -247,4 +269,23 @@ type WalletOnce struct{
 	DefaultCollection bool `json:"default_collection"`
 	WalletId string `json:"wallet_id"`
 	WalletType int64 `json:"wallet_type"`
+}
+
+type TradeRecordReq struct {
+	Page  int32 `form:"page,optional,default=0"`
+	Search string `form:"search,optional"`
+}
+
+type TradeRecordResp struct {
+	Code          int    `json:"code"`
+	TradeListData *pb.TradeListResp `json:"trade_list_data"`
+}
+
+type PayOnceRecordReq struct {
+	PayOrderId string `form:"pay_order_id"`
+}
+
+type PayOnceRecordResp struct {
+	Code          int    `json:"code"`
+	PayOnceList *pb2.PayOnceList `json:"pay_once_list"`
 }

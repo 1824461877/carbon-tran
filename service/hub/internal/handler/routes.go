@@ -6,8 +6,9 @@ import (
 
 	exchange "hub/internal/handler/exchange"
 	personal "hub/internal/handler/personal"
-	user "hub/internal/handler/wallet"
+	record "hub/internal/handler/record"
 	retirefile "hub/internal/handler/retirefile"
+	user "hub/internal/handler/wallet"
 	"hub/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -51,6 +52,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/exchange/asset_list",
 				Handler: exchange.GetExchangeAssetListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/exchange/asset_details",
+				Handler: exchange.GetExchangeAssetDetailsHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
@@ -108,6 +114,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		),
 	)
 
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/assets/assets_details",
+				Handler: personal.GetPersonalAssetDetailsHandler(serverCtx),
+			},
+		},
+	)
+
 	// wallet wallet
 	server.AddRoutes(
 		rest.WithMiddlewares(
@@ -141,7 +157,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/user_wallet/list",
 					Handler: user.UserWalletListHandler(serverCtx),
 				},
-			}...
+			}...,
 		),
+	)
+
+	// record
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/record/get_trade_bill",
+				Handler: record.GetTradeRecordHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/record/get_pay_once",
+				Handler: record.GetPayOnceRecordHandler(serverCtx),
+			},
+		},
 	)
 }

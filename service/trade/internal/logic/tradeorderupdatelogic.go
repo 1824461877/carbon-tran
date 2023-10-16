@@ -104,11 +104,16 @@ func (l *TradeOrderUpdateLogic) TradeOrderUpdate(in *pb.TradeOrderUpdateReq) (*p
 	var (
 		as = &model.AssetsSell{}
 	)
+	as, err = l.svcCtx.MysqlServiceContext.AssetsSell.FindOneByExId(l.ctx, tradeOrder.ExchangeAssetID)
+	if err != nil {
+		return nil, err
+	}
 	if (as.Number - tradeOrder.Number) <= 0 {
 		//_, err = l.svcCtx.Redis.DelCtx(l.ctx, "exchange_"+req.ExId)
 		//if err != nil {
 		//	return nil, err
 		//}
+		fmt.Println(as.Number, tradeOrder.Number, "---0000000000000000000000000")
 		if err = l.svcCtx.MysqlServiceContext.AssetsSell.DeleteExID(l.ctx, tradeOrder.ExchangeAssetID); err != nil {
 			return nil, err
 		}

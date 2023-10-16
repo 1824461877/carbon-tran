@@ -1,7 +1,6 @@
 package paypal
 
 import (
-	"fmt"
 	"github.com/plutov/paypal"
 	"time"
 )
@@ -28,7 +27,6 @@ func (pc *PayClient) GetToken() error {
 	if token, err = pc.Client.GetAccessToken(); err != nil {
 		return err
 	} else {
-		fmt.Println("gggggggggggggggggggggggggggggggggggg")
 		pc.timeout = time.Now().Add(time.Duration(token.ExpiresIn)).Unix()
 	}
 	return nil

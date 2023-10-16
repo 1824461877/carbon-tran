@@ -26,6 +26,9 @@ type (
 	tradeOrderModel interface {
 		Insert(ctx context.Context, data *TradeOrder) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*TradeOrder, error)
+		FindTradeStatus(ctx context.Context, limit int32, offset int32, tradeStatus int64) (*[]TradeOrder, error)
+		FindTradeSearch(ctx context.Context, search string)  (*[]TradeOrder, error)
+		FindPageCount(ctx context.Context) (*int64, error)
 		FindOneByInitiatorTradeOrderIdList(ctx context.Context, initiator string) (*[]TradeOrder, error)
 		FindOneByRecipientTradeOrderIdList(ctx context.Context, recipient string) (*[]TradeOrder, error)
 		FindOneByTradeOrderId(ctx context.Context, tradeOrderId string) (*TradeOrder, error)
@@ -83,6 +86,20 @@ func (m *defaultTradeOrderModel) FindOne(ctx context.Context, id int64) (*TradeO
 	}
 }
 
+func (m *defaultTradeOrderModel) FindTradeSearch(ctx context.Context, search string)  (*[]TradeOrder, error) {
+	query := fmt.Sprintf("select %s from %s where `trade_order_id` = ? or `initiator` = ? or `recipient` = ?  limit 1", tradeOrderRows, m.table)
+	var resp []TradeOrder
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, search, search, search)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
 func (m *defaultTradeOrderModel) FindOneByTradeOrderId(ctx context.Context, tradeOrderId string) (*TradeOrder, error) {
 	query := fmt.Sprintf("select %s from %s where `trade_order_id` = ? limit 1", tradeOrderRows, m.table)
 	var resp TradeOrder
@@ -101,6 +118,20 @@ func (m *defaultTradeOrderModel) FindOneByPayOrderId(ctx context.Context, payOrd
 	query := fmt.Sprintf("select %s from %s where `pay_order_id` = ? limit 1", tradeOrderRows, m.table)
 	var resp TradeOrder
 	err := m.conn.QueryRowCtx(ctx, &resp, query, payOrderId)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultTradeOrderModel) FindPageCount(ctx context.Context) (*int64, error) {
+	query := fmt.Sprintf("select COUNT(*) from %s", m.table)
+	var resp int64
+	err := m.conn.QueryRowCtx(ctx, &resp, query)
 	switch err {
 	case nil:
 		return &resp, nil
@@ -140,6 +171,19 @@ func (m *defaultTradeOrderModel) FindOneByRecipientTradeOrderIdList(ctx context.
 	}
 }
 
+func (m *defaultTradeOrderModel) FindTradeStatus(ctx context.Context, limit int32, offset int32, tradeStatus int64) (*[]TradeOrder, error) {
+	var resp []TradeOrder
+	query := fmt.Sprintf("select %s from %s where `trade_status` = ? limit ? offset ?", tradeOrderRows, m.table)
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, tradeStatus, limit, offset)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
 
 func (m *defaultTradeOrderModel) Insert(ctx context.Context, data *TradeOrder) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, tradeOrderRowsExpectAutoSet)

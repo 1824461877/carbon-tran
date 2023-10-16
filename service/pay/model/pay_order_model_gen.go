@@ -31,6 +31,7 @@ type (
 		Insert(ctx context.Context, data *PayOrder) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*PayOrder, error)
 		FindOneByPayOrderId(ctx context.Context, payOrderId string) (*PayOrder, error)
+		FindAllByPayOrderId(ctx context.Context) (*[]PayOrder, error)
 		Update(ctx context.Context, data *PayOrder) error
 		Delete(ctx context.Context, id int64) error
 	}
@@ -91,6 +92,21 @@ func (m *defaultPayOrderModel) FindOne(ctx context.Context, id int64) (*PayOrder
 		return nil, err
 	}
 }
+
+func (m *defaultPayOrderModel) FindAllByPayOrderId(ctx context.Context) (*[]PayOrder, error) {
+	var resp []PayOrder
+	query := fmt.Sprintf("select %s from %s", payOrderRows, m.table)
+	err := m.QueryRowsNoCacheCtx(ctx, &resp, query)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
 
 func (m *defaultPayOrderModel) FindOneByPayOrderId(ctx context.Context, payOrderId string) (*PayOrder, error) {
 	payOrderPayOrderIdKey := fmt.Sprintf("%s%v", cachePayOrderPayOrderIdPrefix, payOrderId)

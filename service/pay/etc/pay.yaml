@@ -27,13 +27,13 @@ PayServiceAuth:
 
 ServiceMode:
   PayPalMode:
-    Open: "Sandbox"  # S == Sandbox or L == Live
+    Open: "Live"  # S == Sandbox or L == Live
     Sandbox:
-      ClientID: "ASVjV4YKjnDclWd6ZiAeTA7XriXIZGyWKDYn9U2PQJFNZ9CQefjCC5VhCFc3leh0B0lHV2lfrnCaZIhu"
-      Secret: "ECa-_rKf0FAWrw96iAocJHbXDV-9IP97F4xjTuUuOJPjZnbYwMsme2dB3S-KYAUQIS9QoCpvTva9Naj4"
+      ClientID: "AcrnEYW5bsX6c48KouBQKROEbGtEbE1YLC5_GhbtMQTC8Fr2N25tvh9CI6Jy7RhojAPA7u3a0_aZ8k0p"
+      Secret: "EJeuLy2paT_qC0Fiv3vSJgcmD76VB3mke79ZA_yYpf_6LtLgtDAilqt4sJl_-ZpJLN2u1iQMmJFoKfDo"
     Live:
-      ClientID: "ASVjV4YKjnDclWd6ZiAeTA7XriXIZGyWKDYn9U2PQJFNZ9CQefjCC5VhCFc3leh0B0lHV2lfrnCaZIhu"
-      Secret: "ECa-_rKf0FAWrw96iAocJHbXDV-9IP97F4xjTuUuOJPjZnbYwMsme2dB3S-KYAUQIS9QoCpvTva9Naj4"
+      ClientID: "AZSy9PzMjYQP8xdeAh25OPagO3yLaDZAiWdIWnMI7eo5T84v0eccXk5htyJ8B_epUxY5KBVCepbhuFoL"
+      Secret: "EIavnlPtXr9a0sXFYgoI8o60xgEPNihnxGYxfUA8t-v4UIaPR2LHNtpqqqA3XYMLjbCbTX1lfiXQ58c9"
 
 MysqlService:
   WalletMysql:

@@ -75,7 +75,7 @@ func (l *TradeExecutionLogic) TradeExecution(in *pb.TradeReq) (*pb.TradeExecutio
 	}
 
 	if PayToken, err = l.PayExecution(types.PayOrder{
-		PayAmount:    claims.PayAmount,
+		PayAmount:    claims.PayAmount * float64(claims.Number),
 		Initiator:    claims.Initiator,
 		CollectionID: as.CollectionWalletId,
 		Recipient:    claims.Recipient,

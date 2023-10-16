@@ -13,15 +13,17 @@ import (
 )
 
 type (
-	TradeExecutionResp   = pb.TradeExecutionResp
-	TradeListResp        = pb.TradeListResp
-	TradeObtainReq       = pb.TradeObtainReq
-	TradeOnceResp        = pb.TradeOnceResp
-	TradeOrderUpdateReq  = pb.TradeOrderUpdateReq
-	TradeOrderUpdateResp = pb.TradeOrderUpdateResp
-	TradeReq             = pb.TradeReq
+	GetAllTradeOrderObtainReq = pb.GetAllTradeOrderObtainReq
+	TradeExecutionResp        = pb.TradeExecutionResp
+	TradeListResp             = pb.TradeListResp
+	TradeObtainReq            = pb.TradeObtainReq
+	TradeOnceResp             = pb.TradeOnceResp
+	TradeOrderUpdateReq       = pb.TradeOrderUpdateReq
+	TradeOrderUpdateResp      = pb.TradeOrderUpdateResp
+	TradeReq                  = pb.TradeReq
 
 	TradeServer interface {
+		GetAllTradeOrderObtainList(ctx context.Context, in *GetAllTradeOrderObtainReq, opts ...grpc.CallOption) (*TradeListResp, error)
 		GetTradeObtainList(ctx context.Context, in *TradeObtainReq, opts ...grpc.CallOption) (*TradeListResp, error)
 		TradeExecution(ctx context.Context, in *TradeReq, opts ...grpc.CallOption) (*TradeExecutionResp, error)
 		TradeOrderUpdate(ctx context.Context, in *TradeOrderUpdateReq, opts ...grpc.CallOption) (*TradeOrderUpdateResp, error)
@@ -36,6 +38,11 @@ func NewTradeServer(cli zrpc.Client) TradeServer {
 	return &defaultTradeServer{
 		cli: cli,
 	}
+}
+
+func (m *defaultTradeServer) GetAllTradeOrderObtainList(ctx context.Context, in *GetAllTradeOrderObtainReq, opts ...grpc.CallOption) (*TradeListResp, error) {
+	client := pb.NewTradeServerClient(m.cli.Conn())
+	return client.GetAllTradeOrderObtainList(ctx, in, opts...)
 }
 
 func (m *defaultTradeServer) GetTradeObtainList(ctx context.Context, in *TradeObtainReq, opts ...grpc.CallOption) (*TradeListResp, error) {

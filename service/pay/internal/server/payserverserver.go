@@ -22,6 +22,11 @@ func NewPayServerServer(svcCtx *svc.ServiceContext) *PayServerServer {
 	}
 }
 
+func (s *PayServerServer) GetBasicPayOnce(ctx context.Context, in *pb.PayOnceReq) (*pb.PayOnceList, error) {
+	l := logic.NewGetBasicPayOnceLogic(ctx, s.svcCtx)
+	return l.GetBasicPayOnce(in)
+}
+
 func (s *PayServerServer) GetPayList(ctx context.Context, in *pb.PayOnceReq) (*pb.PayListResp, error) {
 	l := logic.NewGetPayListLogic(ctx, s.svcCtx)
 	return l.GetPayList(in)

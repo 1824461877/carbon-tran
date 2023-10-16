@@ -2,6 +2,7 @@ CREATE TABLE assets_sell (
       `id` bigint NOT NULL AUTO_INCREMENT,
       `ex_id` varchar(255) NOT NULL COMMENT '交易单号',
       `ass_id` varchar(255) NOT NULL COMMENT '资产编号',
+      `country` varchar(5) NOT NULL COMMENT '资产所属国家',
       `collection_wallet_id` varchar(255) NOT NULL COMMENT '收款的钱包 id',
       `user_id` varchar(255)  NOT NULL COMMENT '资产所属用户',
       `source` varchar(255)  NOT NULL COMMENT '来源资产',

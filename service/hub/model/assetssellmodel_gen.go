@@ -32,6 +32,8 @@ type (
 		Update(ctx context.Context, data *AssetsSell) error
 		FindAll(ctx context.Context) (*[]AssetsSell, error)
 		Delete(ctx context.Context, ass_id string) error
+		FindAllLocationTabulation(ctx context.Context,location string) (*[]AssetsSell, error)
+		FindAllSourceTabulation(ctx context.Context, source string) (*[]AssetsSell, error)
 	}
 
 	defaultAssetsSellModel struct {
@@ -43,6 +45,7 @@ type (
 		Id                 int64     `db:"id" json:"id"`
 		ExId               string    `db:"ex_id" json:"ex_id"`                // 交易单号
 		AssId              string    `db:"ass_id" json:"ass_id"`               // 资产编号
+		Country            string    `db:"country" json:"country"`
 		CollectionWalletId string    `db:"collection_wallet_id" json:"collection_wallet_id"` // 收款的钱包 id
 		UserId             string    `db:"user_id" json:"user_id"`              // 资产所属用户
 		Source             string    `db:"source" json:"source"`               // 来源资产
@@ -122,6 +125,35 @@ func (m *defaultAssetsSellModel) FindAllByUID(ctx context.Context, uid string) (
 	}
 }
 
+func (m *defaultAssetsSellModel) FindAllSourceTabulation(ctx context.Context, source string) (*[]AssetsSell, error) {
+	query := fmt.Sprintf("select %s from %s where `source` = ?", assetsSellRows, m.table)
+	var resp []AssetsSell
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, source)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultAssetsSellModel) FindAllLocationTabulation(ctx context.Context,location string) (*[]AssetsSell, error) {
+	query := fmt.Sprintf("select %s from %s where `country` = ?", assetsSellRows, m.table)
+	var resp []AssetsSell
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, location)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+
 func (m *defaultAssetsSellModel) FindAll(ctx context.Context) (*[]AssetsSell, error) {
 	query := fmt.Sprintf("select %s from %s", assetsSellRows, m.table)
 	var resp []AssetsSell
@@ -137,14 +169,14 @@ func (m *defaultAssetsSellModel) FindAll(ctx context.Context) (*[]AssetsSell, er
 }
 
 func (m *defaultAssetsSellModel) Insert(ctx context.Context, data *AssetsSell) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, assetsSellRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.ExId, data.AssId, data.CollectionWalletId, data.UserId, data.Source, data.Amount, data.Number, data.EndTime)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, assetsSellRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.ExId, data.AssId, data.Country, data.CollectionWalletId, data.UserId, data.Source, data.Amount, data.Number, data.EndTime)
 	return ret, err
 }
 
 func (m *defaultAssetsSellModel) Update(ctx context.Context, data *AssetsSell) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, assetsSellRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.ExId, data.AssId, data.CollectionWalletId, data.UserId, data.Source, data.Amount, data.Number, data.EndTime, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.ExId, data.AssId, data.Country, data.CollectionWalletId, data.UserId, data.Source, data.Amount, data.Number, data.EndTime, data.Id)
 	return err
 }
 

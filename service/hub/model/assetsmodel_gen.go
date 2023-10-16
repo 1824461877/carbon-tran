@@ -33,6 +33,7 @@ type (
 		UpdateListing(ctx context.Context, data *Assets) error
 		UpdateNumber(ctx context.Context, data *Assets) error
 		Delete(ctx context.Context, id int64) error
+		FindSearch(ctx context.Context, search string) (*[]Assets, error)
 	}
 
 	defaultAssetsModel struct {
@@ -100,6 +101,20 @@ func (m *defaultAssetsModel) FindUidOne(ctx context.Context, uid string) (*Asset
 	query := fmt.Sprintf("select %s from %s where `uid` = ? limit 1", assetsRows, m.table)
 	var resp Assets
 	err := m.conn.QueryRowCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultAssetsModel) FindSearch(ctx context.Context, search string) (*[]Assets, error) {
+	query := fmt.Sprintf("select %s from %s where `listing` = ? and ( `gs_id` =? or `project` =? or `serial_number` =? )", assetsRows, m.table)
+	var resp []Assets
+	err := m.conn.QueryRowsCtx(ctx, &resp, query,1, search, search)
 	switch err {
 	case nil:
 		return &resp, nil

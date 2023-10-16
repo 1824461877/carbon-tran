@@ -6,4 +6,5 @@ use (
 	./service/pay
 	./service/gsf
 	./common/retire_cert
+	./service/gateway
 )

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.4
-// source: pb/proto/pay.proto
+// source: proto/proto/pay.proto
 
 package pb
 
@@ -19,16 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PayServer_GetPayList_FullMethodName     = "/pb.PayServer/GetPayList"
-	PayServer_PayExecution_FullMethodName   = "/pb.PayServer/PayExecution"
-	PayServer_PayOrderStatus_FullMethodName = "/pb.PayServer/PayOrderStatus"
-	PayServer_PayApprove_FullMethodName     = "/pb.PayServer/PayApprove"
+	PayServer_GetBasicPayOnce_FullMethodName = "/proto.PayServer/GetBasicPayOnce"
+	PayServer_GetPayList_FullMethodName      = "/proto.PayServer/GetPayList"
+	PayServer_PayExecution_FullMethodName    = "/proto.PayServer/PayExecution"
+	PayServer_PayOrderStatus_FullMethodName  = "/proto.PayServer/PayOrderStatus"
+	PayServer_PayApprove_FullMethodName      = "/proto.PayServer/PayApprove"
 )
 
 // PayServerClient is the client API for PayServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PayServerClient interface {
+	GetBasicPayOnce(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayOnceList, error)
 	GetPayList(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayListResp, error)
 	PayExecution(ctx context.Context, in *PayReq, opts ...grpc.CallOption) (*PayExecutionResp, error)
 	PayOrderStatus(ctx context.Context, in *PayOrderStatusReq, opts ...grpc.CallOption) (*PayOrderStatusResp, error)
@@ -41,6 +43,15 @@ type payServerClient struct {
 
 func NewPayServerClient(cc grpc.ClientConnInterface) PayServerClient {
 	return &payServerClient{cc}
+}
+
+func (c *payServerClient) GetBasicPayOnce(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayOnceList, error) {
+	out := new(PayOnceList)
+	err := c.cc.Invoke(ctx, PayServer_GetBasicPayOnce_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *payServerClient) GetPayList(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayListResp, error) {
@@ -83,6 +94,7 @@ func (c *payServerClient) PayApprove(ctx context.Context, in *PayApproveReq, opt
 // All implementations must embed UnimplementedPayServerServer
 // for forward compatibility
 type PayServerServer interface {
+	GetBasicPayOnce(context.Context, *PayOnceReq) (*PayOnceList, error)
 	GetPayList(context.Context, *PayOnceReq) (*PayListResp, error)
 	PayExecution(context.Context, *PayReq) (*PayExecutionResp, error)
 	PayOrderStatus(context.Context, *PayOrderStatusReq) (*PayOrderStatusResp, error)
@@ -94,6 +106,9 @@ type PayServerServer interface {
 type UnimplementedPayServerServer struct {
 }
 
+func (UnimplementedPayServerServer) GetBasicPayOnce(context.Context, *PayOnceReq) (*PayOnceList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBasicPayOnce not implemented")
+}
 func (UnimplementedPayServerServer) GetPayList(context.Context, *PayOnceReq) (*PayListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPayList not implemented")
 }
@@ -117,6 +132,24 @@ type UnsafePayServerServer interface {
 
 func RegisterPayServerServer(s grpc.ServiceRegistrar, srv PayServerServer) {
 	s.RegisterService(&PayServer_ServiceDesc, srv)
+}
+
+func _PayServer_GetBasicPayOnce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PayOnceReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PayServerServer).GetBasicPayOnce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PayServer_GetBasicPayOnce_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PayServerServer).GetBasicPayOnce(ctx, req.(*PayOnceReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _PayServer_GetPayList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -195,9 +228,13 @@ func _PayServer_PayApprove_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PayServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.PayServer",
+	ServiceName: "proto.PayServer",
 	HandlerType: (*PayServerServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetBasicPayOnce",
+			Handler:    _PayServer_GetBasicPayOnce_Handler,
+		},
 		{
 			MethodName: "GetPayList",
 			Handler:    _PayServer_GetPayList_Handler,
@@ -216,5 +253,5 @@ var PayServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "pb/proto/pay.proto",
+	Metadata: "proto/proto/pay.proto",
 }

@@ -13,10 +13,12 @@ import (
 )
 
 type (
+	PayAllListResp     = pb.PayAllListResp
 	PayApproveReq      = pb.PayApproveReq
 	PayApproveResp     = pb.PayApproveResp
 	PayExecutionResp   = pb.PayExecutionResp
 	PayListResp        = pb.PayListResp
+	PayOnceList        = pb.PayOnceList
 	PayOnceReq         = pb.PayOnceReq
 	PayOnceResp        = pb.PayOnceResp
 	PayOrderStatusReq  = pb.PayOrderStatusReq
@@ -24,6 +26,7 @@ type (
 	PayReq             = pb.PayReq
 
 	PayServer interface {
+		GetBasicPayOnce(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayOnceList, error)
 		GetPayList(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayListResp, error)
 		PayExecution(ctx context.Context, in *PayReq, opts ...grpc.CallOption) (*PayExecutionResp, error)
 		PayOrderStatus(ctx context.Context, in *PayOrderStatusReq, opts ...grpc.CallOption) (*PayOrderStatusResp, error)
@@ -39,6 +42,11 @@ func NewPayServer(cli zrpc.Client) PayServer {
 	return &defaultPayServer{
 		cli: cli,
 	}
+}
+
+func (m *defaultPayServer) GetBasicPayOnce(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayOnceList, error) {
+	client := pb.NewPayServerClient(m.cli.Conn())
+	return client.GetBasicPayOnce(ctx, in, opts...)
 }
 
 func (m *defaultPayServer) GetPayList(ctx context.Context, in *PayOnceReq, opts ...grpc.CallOption) (*PayListResp, error) {

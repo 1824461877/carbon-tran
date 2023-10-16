@@ -1,0 +1,17 @@
+Name: qt-api
+Host: 0.0.0.0
+Port: 8188
+Upstreams:
+  - Grpc:
+      Etcd:
+        Hosts:
+          - 127.0.0.1:2379
+        Key: trade.rpc
+      # protoset mode
+    ProtoSets:
+      - pb/trade.pb
+    # Mappings can also be written in proto options
+    Mappings:
+      - Method: get
+        Path: /get_trade_order_obtain_list
+        RpcPath: pb.TradeServer/GetAllTradeOrderObtainList

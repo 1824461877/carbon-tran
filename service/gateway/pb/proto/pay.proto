@@ -1,0 +1,74 @@
+syntax = "proto3";
+option go_package = "./proto";
+package pb;
+
+message PayReq {
+  string TaskToken = 1;
+  string ReqTime = 2;
+}
+
+message PayOnceReq {
+  string PayOrderId = 1;
+}
+
+message PayOnceResp {
+  string PayOrderId = 1;
+  string Initiator = 2;
+  string Recipient = 3;
+  int32 PayStatus = 4;
+  int64 PayAmount = 5;
+  string InitiatorTime = 6;
+  string FinishTime = 7;
+}
+
+message PayListResp {
+  repeated PayOnceResp PayListResp = 1;
+}
+
+message PayExecutionResp {
+  string PayOrderId = 1;
+  int32 PayStatus = 2;
+  string CreateTime = 3;
+}
+
+message PayApproveReq {
+  string PayOrderId = 1;
+}
+
+message PayApproveResp {
+  string PayStatus = 1;
+}
+
+message PayOrderStatusReq {
+  string PayOrderId = 1;
+}
+
+message PayOrderStatusResp {
+  int64 Code = 1;
+  int32 TTL = 2;
+  string PayID = 3;
+  string Status = 4;
+}
+
+message PayAllListResp {
+  repeated PayOnceList PayAllList = 1;
+}
+
+message PayOnceList {
+  string PayOrderId = 1;
+  string PayId = 2;
+  string Initiator = 3;
+  string Recipient = 4;
+  int64 PayStatus = 5;
+  int64 PayAmount = 6;
+  string InitiatorTime = 7;
+  string FinishTime = 8;
+}
+
+service PayServer {
+  rpc GetBasicPayOnce(PayOnceReq) returns(PayOnceList);
+  rpc GetPayList(PayOnceReq) returns(PayListResp);
+  rpc PayExecution(PayReq) returns(PayExecutionResp);
+  rpc PayOrderStatus(PayOrderStatusReq) returns(PayOrderStatusResp);
+  rpc PayApprove(PayApproveReq) returns(PayApproveResp);
+}

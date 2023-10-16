@@ -22,6 +22,11 @@ func NewTradeServerServer(svcCtx *svc.ServiceContext) *TradeServerServer {
 	}
 }
 
+func (s *TradeServerServer) GetAllTradeOrderObtainList(ctx context.Context, in *pb.GetAllTradeOrderObtainReq) (*pb.TradeListResp, error) {
+	l := logic.NewGetAllTradeOrderObtainListLogic(ctx, s.svcCtx)
+	return l.GetAllTradeOrderObtainList(in)
+}
+
 func (s *TradeServerServer) GetTradeObtainList(ctx context.Context, in *pb.TradeObtainReq) (*pb.TradeListResp, error) {
 	l := logic.NewGetTradeObtainListLogic(ctx, s.svcCtx)
 	return l.GetTradeObtainList(in)
